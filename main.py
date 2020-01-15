@@ -6,25 +6,31 @@ PLAYER_ICON = '@'
 PLAYER_START_X = 3
 PLAYER_START_Y = 3
 
-BOARD_WIDTH = 30
+BOARD_WIDTH = 70
 BOARD_HEIGHT = 20
 
 
-def create_player(player):
+def create_player():
 
     #1. Get a player's name from input
     name = input("Enter a name of player:  ")
 
     #2. Player's inventory with name, hps, position, available items etc.
-    player = { "Name" : f'{name}' ,
+    player = {  "Name" : f'{name}' ,
+                "icon": PLAYER_ICON,
                 "Hps" : 100 ,
                 "Experience" : 1,
-                "Player position" : board[1][1] ,   ####<---- czy tak można zapisać pozycję?
+                "position" : {
+                    'x': PLAYER_START_X,
+                    'y': PLAYER_START_Y,
+                },
                 "Inventory" : { "food items" : { "chocolate" : 1, "bananas" : 3, "apples" : 2},
                                                 "weapon items" : {"miecz" : 2, "łuk" : 1, "proca" : 4},
                                                 "special items" : 0
                                             }
     }
+
+    return player
 
     
     '''
@@ -51,9 +57,13 @@ def main():
             is_running = False
 
     # Press 'i' to check your inventory status
-        if key == 'i':
+        elif key == 'i':
             is_running = True
-            ui.display_inventory(player)
+            ui.display_inventory(player, board)
+
+        elif key == 'w' or key == 's' or key == 'a' or key == 'd':
+            engine.verify_move_is_possible(key.lower(), board, player)
+            engine.put_player_on_board(board, player)
             
         else:
             pass

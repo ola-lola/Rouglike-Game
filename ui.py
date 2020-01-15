@@ -1,3 +1,6 @@
+import util
+
+
 def display_board(board):
     for line in board:
         for character in line:
@@ -5,13 +8,13 @@ def display_board(board):
         print()
 
 
-
-def display_inventory(player):
+def display_inventory(player, board):
 
     util.clear_screen()
     is_in_inventory = True
     while is_in_inventory:
-        player_inventory = main.create_player(player['Inventory'])    
+        player_inventory = player['Inventory']
+        print(player['Inventory'])
                                             ####<---- Jak odnieść się do defa gdzie jest umieszczony player?
                                             ####----- W ten sposób możemy się odnieść chyba tylko do zmiennej globalnej
         
@@ -21,10 +24,6 @@ def display_inventory(player):
             is_running = True
             is_in_inventory = False
             display_board(board)
-
-    # If player decide to quit a game after check inventory
-        elif key == 'q':
-            is_running = False
             
         else:
             pass

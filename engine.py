@@ -1,12 +1,19 @@
+BOARD_BACKGROUND_SYMBOL = ' ' #0
+WALL_SYMBOL = '#' #1
+EXIT_SYMBOL = ' ' #2
+
+
 def create_board(width, height):
     board = []
     for x in range(height):
         row = []
         for y in range(width):
-            if x < 1 or x == (height - 1) or y < 1 or y == (width - 1):
-                row.append('#')
+            if x == (height - 2) and y == (width - 1):
+                row.append(EXIT_SYMBOL)
+            elif x < 1 or x == (height - 1) or y < 1 or y == (width - 1):
+                row.append(WALL_SYMBOL)
             else:
-                row.append(' ')
+                row.append(BOARD_BACKGROUND_SYMBOL)
         board.append(row)
     return board
     '''
@@ -21,7 +28,37 @@ def create_board(width, height):
     '''
 
 
+def is_border(x_coordinate, y_coordinate, board, border_symbol):
+    if board[x_coordinate][y_coordinate] == border_symbol:
+        return True
+    else:
+        return False
+
+
 def verify_move_is_possible(key_input, board, player):
+
+    x = player['position']['x']
+    y = player['position']['y']
+
+    if key_input == 'w':
+        x_new = x - 1
+        y_new = y
+    elif key_input == 's':
+        x_new = x + 1
+        y_new = y
+    elif key_input == 'a':
+        x_new = x
+        y_new = y - 1
+    elif key_input == 'd':
+        x_new = x
+        y_new = y + 1
+
+    if not is_border(x_new, y_new, board, WALL_SYMBOL):
+        player['position']['x'] = x_new
+        player['position']['y'] = y_new
+
+        board[x][y] = ' '
+
     '''
     Modifies player coordinates if allowed (player cannot move through walls etc)
 
@@ -33,10 +70,17 @@ def verify_move_is_possible(key_input, board, player):
     Returns:
     Nothing
     '''
-    pass
 
 
 def put_player_on_board(board, player):
+
+    x = player['position']['x']
+    y = player['position']['y']
+
+    board[x][y] = player['icon']
+
+    # TUTAJ IF-y dot food/item/mob
+
     '''
     Modifies the game board by placing the player icon at its coordinates.
 
@@ -47,7 +91,6 @@ def put_player_on_board(board, player):
     Returns:
     Nothing
     '''
-    pass
 
 
 def add_to_inventory(player, added_items):
@@ -61,7 +104,7 @@ def add_to_inventory(player, added_items):
 
 
 def remove_from_inventory(player, removed_items):
-  
+
     for item in removed_items:
         if item in player["Inventory"].keys():
             if player["Inventory"][item] > 1:
