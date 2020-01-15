@@ -48,3 +48,24 @@ def put_player_on_board(board, player):
     Nothing
     '''
     pass
+
+
+def add_to_inventory(player, added_items):
+  
+    for item in added_items:
+        if item not in player["Inventory"].keys():
+            player["Inventory"][item] = 1
+        elif item in player["Inventory"]:
+            player["Inventory"][item] += 1
+    return player["Inventory"]
+
+
+def remove_from_inventory(player, removed_items):
+  
+    for item in removed_items:
+        if item in player["Inventory"].keys():
+            if player["Inventory"][item] > 1:
+                player["Inventory"][item] -= 1
+            else:
+                player["Inventory"].pop(item)
+    return inventory
