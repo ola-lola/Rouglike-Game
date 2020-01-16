@@ -1,10 +1,4 @@
-import util
-import engine
-import ui
-import main
-# Import modules here, got all of them so far, will cut out in final version of game
-
-# Define banned items from items_list() for specific monster type
+# Define banned items for specific monster type
 greenItems = ["long_sword", "two-handed_sword", "light_sabre",
                     "sword_of_doom", "leather_vest", "chain_mail",
                     "plate_mail", "armor_of_doom"]

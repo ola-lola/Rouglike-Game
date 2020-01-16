@@ -1,8 +1,4 @@
-import util
-import engine
-import ui
 import items
-# Import modules here, got all of them so far, will cut out in final version of game
 
 # Define monsters attrbts/inventory function, needed as a dict with constant data when imported for operations in other modules
 def monsters_overview():
@@ -27,7 +23,10 @@ def monsters_overview():
             "hps": 50,
             "experience": 25,
             "inventory": items.items_list()
-            }
+            },
+        "boss": {
+            "icon": "B"
+        }
     }
     return monsters
 
