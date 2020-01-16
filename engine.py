@@ -1,3 +1,4 @@
+import monsters
 BOARD_BACKGROUND_SYMBOL = ' ' #0
 WALL_SYMBOL = '#' #1
 EXIT_SYMBOL = ' ' #2
@@ -35,11 +36,12 @@ def is_border(x_coordinate, y_coordinate, board, border_symbol):
         return False
 
 
+
 def verify_move_is_possible(key_input, board, player):
 
     x = player['position']['x']
     y = player['position']['y']
-
+    
     if key_input == 'w':
         x_new = x - 1
         y_new = y
@@ -112,3 +114,34 @@ def remove_from_inventory(player, removed_items):
             else:
                 player["Inventory"].pop(item)
     return inventory
+
+def random_mobPlace():
+    pass
+
+def random_mobMovement():
+    pass
+
+def generate_boss(width, height):
+    boss = []
+    for x in range(height):
+        row = []
+        for y in range(width):
+            if x < 1 or x == (height - 1) or y < 1 or y == (width - 1):
+                row.append(monsters.monsters_overview()["boss"]["icon"])
+            else:
+                row.append(" ")
+        boss.append(row)
+    return boss
+
+def generate_bossRoom():
+    pass
+
+def fight_regular():
+    pass
+
+def fight_boss():
+    pass
+
+def fireball(direction):
+    pass
+

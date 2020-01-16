@@ -23,8 +23,7 @@ def display_inventory(player, board):
         if key == 'i':
             is_running = True
             is_in_inventory = False
-            display_board(board)
-            
+            display_board(board)         
         else:
             pass
         util.clear_screen()
@@ -36,3 +35,18 @@ def display_inventory(player, board):
     Returns:
     Nothing
     '''
+    
+def display_mob(mob):
+    pass
+
+def display_boss(boss_array):
+    for row in boss_array:
+        for character in row:
+            print(character, end='')
+        print()
+
+def display_fireball(character):
+    pass
+
+def display_bossRoom(room):
+    pass

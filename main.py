@@ -6,8 +6,8 @@ PLAYER_ICON = '@'
 PLAYER_START_X = 3
 PLAYER_START_Y = 3
 
-BOARD_WIDTH = 70
-BOARD_HEIGHT = 20
+BOARD_WIDTH = 59
+BOARD_HEIGHT = 59
 
 
 def create_player():
@@ -29,12 +29,11 @@ def create_player():
                                                 "special items" : 0
                                             }
     }
-
     return player
 
     
     '''
-    Creates a 'player' dictionary for storing all player related informations - i.e. player icon, player position.
+    Creates a 'player' dictionary for storing all player related information - i.e. player icon, player position.
     Fell free to extend this dictionary!
 
     Returns:
@@ -43,6 +42,7 @@ def create_player():
 
 
 def main():
+    movement_keys = ['w','s','a','d']
     player = create_player()
     board = engine.create_board(BOARD_WIDTH, BOARD_HEIGHT)
 
@@ -55,16 +55,13 @@ def main():
         key = util.key_pressed()
         if key == 'q':
             is_running = False
-
     # Press 'i' to check your inventory status
         elif key == 'i':
             is_running = True
-            ui.display_inventory(player, board)
-
-        elif key == 'w' or key == 's' or key == 'a' or key == 'd':
+            ui.display_inventory(player, board)            
+        elif key in movement_keys:
             engine.verify_move_is_possible(key.lower(), board, player)
             engine.put_player_on_board(board, player)
-            
         else:
             pass
         util.clear_screen()
