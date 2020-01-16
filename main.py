@@ -25,8 +25,8 @@ def create_player():
                     'y': PLAYER_START_Y,
                 },
                 "Inventory" : { "food items" : { "chocolate" : 1, "bananas" : 3, "apples" : 2},
-                                                "weapon items" : {"miecz" : 2, "łuk" : 1, "proca" : 4},
-                                                "special items" : 0
+                                "weapon items" : {"miecz" : 2, "łuk" : 1, "proca" : 4},
+                                "special items" : {"key" : 2}
                                             }
     }
     return player
