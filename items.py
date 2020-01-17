@@ -1,18 +1,34 @@
 # Define banned items for specific monster type
-greenItems = ["long_sword", "two-handed_sword", "light_sabre",
-                    "sword_of_doom", "leather_vest", "chain_mail",
-                    "plate_mail", "armor_of_doom"]
+greenItems = [  "long_sword",
+                "two-handed_sword",
+                "light_sabre",
+                "sword_of_doom",
+                "leather_vest",
+                "chain_mail",
+                "plate_mail",
+                "armor_of_doom"]
 
-yellowItems = ["light_sabre", "sword_of_doom",
-                "plate_mail", "armor_of_doom"]
+yellowItems = [ "light_sabre",
+                "sword_of_doom",
+                "plate_mail",
+                "armor_of_doom"]
+
 
 def items_list():
     items_list = {
-        "consumables": {
-            "apple": {"hp": 25, "weight": 5},
-            "healing_potion": {"hp": 100, "weight": 5},
-            "apple_pie": {"hp": 60, "weight": 10}
-        },
+                    "consumables": {
+                    "apple": {
+                            "hp"    : 25,
+                            "weight": 5
+                            },
+                    "healing_potion": {
+                                        "hp"        : 100,
+                                        "weight"    : 5
+                                    },
+                    "apple_pie": {
+                                    "hp"    : 60,
+                                    "weight": 10}
+                    },
         "weapons": {
             "stick": {"damage": 1, "weight": 1},
             "club": {"damage": 3, "weight": 5},
@@ -32,6 +48,7 @@ def items_list():
         }
     }
     return items_list
+
 
 # Define function for inventory of a given monster type, takes inv parameter as dict and banned parameter as list
 def mob_inv(inv, banned):

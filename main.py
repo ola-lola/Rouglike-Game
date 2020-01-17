@@ -6,9 +6,6 @@ PLAYER_ICON = '@'
 PLAYER_START_X = 3
 PLAYER_START_Y = 3
 
-BOARD_WIDTH = 50
-BOARD_HEIGHT = 37
-
 
 def create_player():
     # 1. Get a player's name from input
@@ -52,7 +49,8 @@ def create_player():
 def main():
     movement_keys = ['w', 's', 'a', 'd']
     player = create_player()
-    board = engine.create_board(BOARD_WIDTH, BOARD_HEIGHT, level=1)
+    level = 1
+    board = engine.create_board(LEVEL)
 
     util.clear_screen()
     is_running = True
@@ -63,7 +61,12 @@ def main():
         key = util.key_pressed()
         # MOVE THE PLAYER
         if key in movement_keys:
-            engine.verify_move_is_possible(key.lower(), board, player)
+            engine.verify_move_is_possible(key.lower(), board, player, level)
+            if engine.is_next_level(player["position"]["x"], player["position"]["y"], board, ">"):
+                level += 1
+                board = engine.create_board(level)
+                player['position']['x'] = PLAYER_START_X
+                player['position']['y'] = PLAYER_START_Y
             engine.put_player_on_board(board, player)
         # CHECK INVENTORY
         elif key == 'i':
