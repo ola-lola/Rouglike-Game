@@ -1,9 +1,16 @@
 import util
 
 
+color_scheme = {0: ' ',     # BACKGROUND
+                1: '#',     # WALL
+                2: ' ',     # EXIT TO THE NEXT LEVEL
+                '@': '@'}
+
+
 def display_board(board):
     for line in board:
         for character in line:
+            # print(color_scheme[character], end='')
             print(character, end='')
         print()
 

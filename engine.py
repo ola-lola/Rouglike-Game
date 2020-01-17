@@ -1,21 +1,29 @@
+import file_operations
 import monsters
-BOARD_BACKGROUND_SYMBOL = ' ' #0
-WALL_SYMBOL = '#' #1
-EXIT_SYMBOL = ' ' #2
 
 
-def create_board(width, height):
-    board = []
-    for x in range(height):
-        row = []
-        for y in range(width):
-            if x == (height - 2) and y == (width - 1):
-                row.append(EXIT_SYMBOL)
-            elif x < 1 or x == (height - 1) or y < 1 or y == (width - 1):
-                row.append(WALL_SYMBOL)
-            else:
-                row.append(BOARD_BACKGROUND_SYMBOL)
-        board.append(row)
+BOARD_BACKGROUND_SYMBOL = "." #0
+WALL_SYMBOL = "#" #1
+EXIT_SYMBOL = ">" #2
+TREE_SYMBOL = "|"
+
+
+def create_board(width, height, level=0):
+    if level == 0:
+        board = []
+        for x in range(height):
+            row = []
+            for y in range(width):
+                if x == (height - 2) and y == (width - 1):
+                    row.append(EXIT_SYMBOL)
+                elif x < 1 or x == (height - 1) or y < 1 or y == (width - 1):
+                    row.append(WALL_SYMBOL)
+                else:
+                    row.append(BOARD_BACKGROUND_SYMBOL)
+            board.append(row)
+    else:
+        filename = f"map{level}.txt"
+        board = file_operations.import_board(filename)
     return board
     '''
     Creates a new game board based on input parameters.
@@ -29,12 +37,11 @@ def create_board(width, height):
     '''
 
 
-def is_border(x_coordinate, y_coordinate, board, border_symbol):
-    if board[x_coordinate][y_coordinate] == border_symbol:
+def is_border(x_coordinate, y_coordinate, board, border_symbols_list):
+    if board[x_coordinate][y_coordinate] in border_symbols_list:
         return True
     else:
         return False
-
 
 
 def verify_move_is_possible(key_input, board, player):
@@ -55,7 +62,7 @@ def verify_move_is_possible(key_input, board, player):
         x_new = x
         y_new = y + 1
 
-    if not is_border(x_new, y_new, board, WALL_SYMBOL):
+    if not is_border(x_new, y_new, board, [WALL_SYMBOL, TREE_SYMBOL]):
         player['position']['x'] = x_new
         player['position']['y'] = y_new
 

@@ -3,7 +3,13 @@ def import_board(filename):
         with open(filename, mode='r') as file:
             file_content = file.readlines()
         for i, line in enumerate(file_content):
-            file_content[i] = line.strip(",\n").split(",")
+            # file_content[i] = line.strip(",\n").split(",")
+            file_content[i] = line.strip(",\n")
+            row = []
+            for char in line:
+                if char != "\n":
+                    row.append(char)
+            file_content[i] = row
         return file_content
     except FileNotFoundError:
         print(f"File '{filename}' not found!")
