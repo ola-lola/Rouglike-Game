@@ -13,7 +13,6 @@ SCREEN_HEIGHT = 50
 
 
 def create_player():
-    wep_name = "stick"
     # 1. Get a player's name from input
     # name = input("Enter a name of player:  ")
     # 2. Player's inventory with name, hps, position, available items etc.
@@ -26,30 +25,17 @@ def create_player():
                                 'x': PLAYER_START_X,
                                 'y': PLAYER_START_Y,
                                 },
-                "equipped"      : {"weapon": {
-                                                "wep_name": wep_name,
-                                                "wep_stats": items.items_list()["weapons"][wep_name],
-                                            },
+                "equipped"      : {"weapon": {},
                                    "armor": items.items_list()["armor"]["robe"]},
-                       
-                "Inventory"     : { "food items": {
-                                                    "chocolate" : 1,
-                                                    "bananas"   : 3,
-                                                    "apples"    : 2
-                                                },
-                                    "weapon items": {
-                                                    "miecz"     : 2,
-                                                    "łuk"       : 1,
-                                                    "proca"     : 4
-                                                    },
-                                    "special items": {
-                                                    "key"       : 2
-                                                    }
+                # NEED TO VALIDATE IF ADD TO INVENTORY FUNCTION IMPLEMENTS CATEGORIES FOR ITEMS
+                "Inventory"     : {
                                 }
     }
-    return player
+    engine.add_to_inventory(player, ["club", "miecz", "miecz", "łuk", "proca"])
+    engine.add_to_inventory(player, ["chocolate", "bananas", "apples"])
+    items.equipWeapon(player, "club")
 
-    
+    return player
     '''
     Creates a 'player' dictionary for storing all player related information - i.e. player icon, player position.
     Fell free to extend this dictionary!
