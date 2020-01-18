@@ -1,5 +1,7 @@
 import file_operations
 import monsters
+import random
+import items
 
 
 BOARD_BACKGROUND_SYMBOL = "."
@@ -10,6 +12,15 @@ WATER_SYMBOL = "o"
 
 PLAYER_START_X = 3
 PLAYER_START_Y = 3
+
+
+def monster_icons():
+    icons = []
+    for key in monsters.monsters_overview():
+        for nest in monsters.monsters_overview()[key]:
+            if nest == "icon":
+                icons.append(monsters.monsters_overview()[key][nest])
+    return icons
 
 
 def create_board(level):
@@ -27,7 +38,7 @@ def create_board(level):
     '''
 
 
-def is_border(x_coordinate, y_coordinate, board, border_symbols_list):
+def is_obstacle(x_coordinate, y_coordinate, board, border_symbols_list):
     if board[x_coordinate][y_coordinate] in border_symbols_list:
         return True
     else:
@@ -48,10 +59,14 @@ def verify_move_is_possible(move_x, move_y, board, player, level):
     x_new = x + move_x
     y_new = y + move_y
 
-    if not is_border(x_new, y_new, board, [WALL_SYMBOL, TREE_SYMBOL, WATER_SYMBOL]):
+    if not is_obstacle(x_new, y_new, board, [WALL_SYMBOL, TREE_SYMBOL, WATER_SYMBOL]):
         player['position']['x'] = x_new
         player['position']['y'] = y_new
         board[x][y] = ' '
+
+    if is_obstacle(x_new, y_new, board,[i for i in monster_icons()]):
+        fight_regular(mobType)
+
     # elif is_next_level(x_new, y_new, board, EXIT_SYMBOL):
     #     level += 1
         # player['position']['x'] = PLAYER_START_X
@@ -135,10 +150,27 @@ def generate_boss(width, height):
 def generate_bossRoom():
     pass
 
+def damage_calculate(character):
+    weapontype = character["equipped"]["weapon"]["wep_name"]
+    true_damage = character["strenght"] +\
+    character["equipped"]["weapon"]["wep_stats"]["damage"] + random.randint(1,6)
 
-def fight_regular():
-    pass
+    print(true_damage)
 
+def health_calculate(character):
+    health = character["hps"] +\
+        character["equipped"]["armor"]
+
+
+def fight_regular(player, mobType):
+
+    # Player attacks
+    damage_calculate(player) 
+
+    fight = True
+    #while fight:
+
+        
 
 def fight_boss():
     pass
@@ -146,4 +178,5 @@ def fight_boss():
 
 def fireball(direction):
     pass
+
 

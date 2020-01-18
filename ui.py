@@ -8,6 +8,10 @@ EXIT_SYMBOL = ">"
 TREE_SYMBOL = "|"
 WATER_SYMBOL = "o"
 
+MONSTER_1 = "G"
+MONSTER_2 = "Y"
+MONSTER_3 = "R"
+
 
 def display_board(board, window):
     for i, line in enumerate(board):
@@ -20,6 +24,12 @@ def display_board(board, window):
                 libtcod.console_set_default_foreground(window, libtcod.green)
             elif char == WATER_SYMBOL:
                 libtcod.console_set_default_foreground(window, libtcod.blue)
+            elif char == MONSTER_1:
+                libtcod.console_set_default_foreground(window, libtcod.dark_green)
+            elif char == MONSTER_2:
+                libtcod.console_set_default_foreground(window, libtcod.dark_amber)
+            elif char == MONSTER_3:
+                libtcod.console_set_default_foreground(window, libtcod.dark_red)
             else:
                 libtcod.console_set_default_foreground(window, libtcod.light_azure)
             libtcod.console_put_char(window, i, j, char, libtcod.BKGND_NONE)

@@ -3,6 +3,7 @@ from input_handlers import handle_keys
 import util
 import engine
 import ui
+import items
 
 PLAYER_ICON = '@'
 PLAYER_START_X = 3
@@ -12,17 +13,25 @@ SCREEN_HEIGHT = 50
 
 
 def create_player():
+    wep_name = "stick"
     # 1. Get a player's name from input
     # name = input("Enter a name of player:  ")
     # 2. Player's inventory with name, hps, position, available items etc.
     player = {  "Name"          : 'Player',#f'{name}',
                 "icon"          : PLAYER_ICON,
-                "Hps"           : 100,
-                "Experience"    : 1,
+                "hps"           : 100,
+                "strenght"      : 15,
+                "experience"    : 1,
                 "position"      : {
                                 'x': PLAYER_START_X,
                                 'y': PLAYER_START_Y,
                                 },
+                "equipped"      : {"weapon": {
+                                                "wep_name": wep_name,
+                                                "wep_stats": items.items_list()["weapons"][wep_name],
+                                            },
+                                   "armor": items.items_list()["armor"]["robe"]},
+                       
                 "Inventory"     : { "food items": {
                                                     "chocolate" : 1,
                                                     "bananas"   : 3,
@@ -60,6 +69,7 @@ def main():
     con = libtcod.console_new(SCREEN_WIDTH, SCREEN_HEIGHT)
 
     player = create_player()
+    engine.damage_calculate(player)
     level = 1
     board = engine.create_board(level)
 
@@ -101,19 +111,6 @@ def main():
 
         if fullscreen:
             libtcod.console_set_fullscreen(not libtcod.console_is_fullscreen())
-
-
-
-
-    while is_running:
-        # MOVE THE PLAYER
-        if key in movement_keys:
-            engine.verify_move_is_possible(key.lower(), board, player, level)
-            if engine.is_next_level(player["position"]["x"], player["position"]["y"], board, ">"):
-                level += 1
-                board = engine.create_board(level)
-                player['position']['x'] = PLAYER_START_X
-                player['position']['y'] = PLAYER_START_Y
 
 
 if __name__ == '__main__':
