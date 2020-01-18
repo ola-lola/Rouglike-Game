@@ -6,6 +6,7 @@ BOARD_BACKGROUND_SYMBOL = "."
 WALL_SYMBOL = "#"
 EXIT_SYMBOL = ">"
 TREE_SYMBOL = "|"
+WATER_SYMBOL = "o"
 
 PLAYER_START_X = 3
 PLAYER_START_Y = 3
@@ -40,24 +41,14 @@ def is_next_level(x_coordinate, y_coordinate, board, border_exit_symbol):
         return False
 
 
-def verify_move_is_possible(key_input, board, player, level):
+def verify_move_is_possible(move_x, move_y, board, player, level):
     x = player['position']['x']
     y = player['position']['y']
-    
-    if key_input == 'w':
-        x_new = x - 1
-        y_new = y
-    elif key_input == 's':
-        x_new = x + 1
-        y_new = y
-    elif key_input == 'a':
-        x_new = x
-        y_new = y - 1
-    elif key_input == 'd':
-        x_new = x
-        y_new = y + 1
 
-    if not is_border(x_new, y_new, board, [WALL_SYMBOL, TREE_SYMBOL]):
+    x_new = x + move_x
+    y_new = y + move_y
+
+    if not is_border(x_new, y_new, board, [WALL_SYMBOL, TREE_SYMBOL, WATER_SYMBOL]):
         player['position']['x'] = x_new
         player['position']['y'] = y_new
         board[x][y] = ' '

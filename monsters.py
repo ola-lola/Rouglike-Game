@@ -1,5 +1,6 @@
 import items
 
+
 # Define monsters attrbts/inventory function, needed as a dict with constant data when imported for operations in other modules
 def monsters_overview():
     monsters = {
@@ -8,7 +9,7 @@ def monsters_overview():
             "damage": 10,
             "hps": 50,
             "experience": 25,
-            "inventory": items.mob_inv(items.items_list(),items.greenItems)
+            "inventory": items.mob_inv(items.items_list(), items.greenItems)
             },
         "yellow": {
             "icon": "Y",
@@ -29,4 +30,3 @@ def monsters_overview():
         }
     }
     return monsters
-

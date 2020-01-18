@@ -1,3 +1,5 @@
+import tcod as libtcod
+from input_handlers import handle_keys
 import util
 import engine
 import ui
@@ -5,13 +7,15 @@ import ui
 PLAYER_ICON = '@'
 PLAYER_START_X = 3
 PLAYER_START_Y = 3
+SCREEN_WIDTH = 80
+SCREEN_HEIGHT = 50
 
 
 def create_player():
     # 1. Get a player's name from input
-    name = input("Enter a name of player:  ")
+    # name = input("Enter a name of player:  ")
     # 2. Player's inventory with name, hps, position, available items etc.
-    player = {  "Name"          : f'{name}',
+    player = {  "Name"          : 'Player',#f'{name}',
                 "icon"          : PLAYER_ICON,
                 "Hps"           : 100,
                 "Experience"    : 1,
@@ -47,18 +51,61 @@ def create_player():
 
 
 def main():
-    movement_keys = ['w', 's', 'a', 'd']
+    # player = create_player()
+    # level = 1
+    # board = engine.create_board(level)
+
+    libtcod.console_set_custom_font('arial10x10.png', libtcod.FONT_TYPE_GREYSCALE | libtcod.FONT_LAYOUT_TCOD)
+    libtcod.console_init_root(SCREEN_WIDTH, SCREEN_HEIGHT, 'Hashed warrior stories', False)
+    con = libtcod.console_new(SCREEN_WIDTH, SCREEN_HEIGHT)
+
     player = create_player()
     level = 1
-    board = engine.create_board(LEVEL)
+    board = engine.create_board(level)
 
-    util.clear_screen()
-    is_running = True
+    key = libtcod.Key()
+    mouse = libtcod.Mouse()
+
+    while not libtcod.console_is_window_closed():
+        libtcod.sys_check_for_event(libtcod.EVENT_KEY_PRESS, key, mouse)
+
+        ui.display_board(board, con)
+        libtcod.console_set_default_foreground(con, libtcod.pink)
+        libtcod.console_put_char(con, player['position']['x'], player['position']['y'], '@', libtcod.BKGND_NONE)
+        libtcod.console_blit(con, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, 0, 0, 0)
+        libtcod.console_flush()
+
+        libtcod.console_put_char(con, player['position']['x'], player['position']['y'], ' ', libtcod.BKGND_NONE)
+
+        action = handle_keys(key)
+
+        move = action.get('move')
+        go_to_inventory = action.get('go_to_inventory')
+        exit = action.get('exit')
+        fullscreen = action.get('fullscreen')
+
+        if move:
+            dx, dy = move
+            engine.verify_move_is_possible(dx, dy, board, player, level)
+            if engine.is_next_level(player["position"]["x"], player["position"]["y"], board, ">"):
+                level += 1
+                board = engine.create_board(level)
+                player['position']['x'] = PLAYER_START_X
+                player['position']['y'] = PLAYER_START_Y
+
+        if go_to_inventory:
+            ui.display_inventory(player, board, con)
+
+        if exit:
+            return True
+
+        if fullscreen:
+            libtcod.console_set_fullscreen(not libtcod.console_is_fullscreen())
+
+
+
+
     while is_running:
-        engine.put_player_on_board(board, player)
-        ui.display_board(board)
-
-        key = util.key_pressed()
         # MOVE THE PLAYER
         if key in movement_keys:
             engine.verify_move_is_possible(key.lower(), board, player, level)
@@ -67,17 +114,6 @@ def main():
                 board = engine.create_board(level)
                 player['position']['x'] = PLAYER_START_X
                 player['position']['y'] = PLAYER_START_Y
-            engine.put_player_on_board(board, player)
-        # CHECK INVENTORY
-        elif key == 'i':
-            is_running = True
-            ui.display_inventory(player, board)
-        # QUIT GAME
-        elif key == 'q':
-            is_running = False
-        else:
-            pass
-        util.clear_screen()
 
 
 if __name__ == '__main__':
