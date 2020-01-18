@@ -8,6 +8,8 @@ def monsters_overview():
             "damage": 10,
             "hps": 50,
             "experience": 25,
+            "equipped": {"weapon": items.items_list()["weapons"]["stick"],
+                         "armor": items.items_list()["armor"]["robe"]},
             "inventory": items.mob_inv(items.items_list(),items.greenItems)
             },
         "yellow": {

@@ -1,6 +1,7 @@
 import util
 import engine
 import ui
+import items
 
 PLAYER_ICON = '@'
 PLAYER_START_X = 3
@@ -8,17 +9,25 @@ PLAYER_START_Y = 3
 
 
 def create_player():
+    wep_name = "stick"
     # 1. Get a player's name from input
     name = input("Enter a name of player:  ")
     # 2. Player's inventory with name, hps, position, available items etc.
     player = {  "Name"          : f'{name}',
                 "icon"          : PLAYER_ICON,
-                "Hps"           : 100,
-                "Experience"    : 1,
+                "hps"           : 100,
+                "strenght"      : 15,
+                "experience"    : 1,
                 "position"      : {
                                 'x': PLAYER_START_X,
                                 'y': PLAYER_START_Y,
                                 },
+                "equipped"      : {"weapon": {
+                                                "wep_name": wep_name,
+                                                "wep_stats": items.items_list()["weapons"][player["equipped"]["weapon"]["wep_name"]],
+                                            },
+                                   "armor": items.items_list()["armor"]["robe"]},
+                       
                 "Inventory"     : { "food items": {
                                                     "chocolate" : 1,
                                                     "bananas"   : 3,
@@ -49,8 +58,9 @@ def create_player():
 def main():
     movement_keys = ['w', 's', 'a', 'd']
     player = create_player()
+    engine.damage_calculate(player)
     level = 1
-    board = engine.create_board(LEVEL)
+    board = engine.create_board(level)
 
     util.clear_screen()
     is_running = True
