@@ -106,24 +106,46 @@ def put_player_on_board(board, player):
     Nothing
     '''
 
+def equipWeapon(player, weaponName):
+    # Validate if item of same category already present, if present - unequip
+    if weaponName not in player["inventory"]["weapons"]:
+        return False
+    wep_stats = items.items_list()["weapons"][weaponName]
+    weapon_entry = {
+        weaponName: wep_stats
+    }
+    player["equipped"]["weapons"][weaponName] = weapon_entry
+    remove_from_inventory(player, weaponName)
+
+def unequip(player, weaponName):
+    if weaponName not in player["equipped"]["weapons"]:
+        return False
+    player["equipped"]["weapons"][weaponName].pop()
+    add_to_inventory(player, weaponName)
+
+def add_to_inventory_category(player, item, category):
+    if item not in player["Inventory"][category].keys():
+        player["Inventory"][category][item] = 1
+    else:
+        player["Inventory"][category][item] += 1
+
 
 def add_to_inventory(player, added_items):
+    # Doesn't work for single items, expects a list as param
     for item in added_items:
-        if item not in player["Inventory"].keys():
-            player["Inventory"][item] = 1
-        elif item in player["Inventory"]:
-            player["Inventory"][item] += 1
-    return player["Inventory"]
-
+        for category in items.item_list().keys():
+            if item in items.item_list()[category]:
+                add_to_inventory_category(player, item, category)
+    return player
 
 def remove_from_inventory(player, removed_items):
     for item in removed_items:
-        if item in player["Inventory"].keys():
-            if player["Inventory"][item] > 1:
-                player["Inventory"][item] -= 1
+        for category in player["Inventory"].keys():
+            if player["Inventory"][category][item] > 1:
+                player["Inventory"][category][item] -= 1
             else:
-                player["Inventory"].pop(item)
-    return player["Inventory"]
+                player["Inventory"][category].pop(item)
+    return player
 
 
 def random_mobPlace():
@@ -150,7 +172,9 @@ def generate_boss(width, height):
 def generate_bossRoom():
     pass
 
+
 def damage_calculate(character):
+    # Add null check for no weapons equipped
     weapontype = character["equipped"]["weapon"]["wep_name"]
     true_damage = character["strenght"] +\
     character["equipped"]["weapon"]["wep_stats"]["damage"] + random.randint(1,6)
