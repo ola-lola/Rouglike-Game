@@ -1,15 +1,37 @@
 import tcod as libtcod
 from input_handlers import handle_keys
+from game_messages import MessageLog
+import Entity
 import util
 import engine
 import ui
 import items
+import render_functions
+#from fov_functions import initialize_fov, recompute_fov
+#from game_states import GameStates
+
 
 PLAYER_ICON = '@'
 PLAYER_START_X = 3
 PLAYER_START_Y = 3
 SCREEN_WIDTH = 80
 SCREEN_HEIGHT = 50
+
+
+BAR_WIDTH = 20
+PANEL_HEIGHT = 7
+PANEL_Y = SCREEN_HEIGHT - PANEL_HEIGHT
+MESSAGE_X = BAR_WIDTH + 2
+MESSAGE_WIDTH = SCREEN_WIDTH - BAR_WIDTH - 2
+MESSAGE_HEIGHT = PANEL_HEIGHT - 1
+MAP_WIDTH = 80
+MAP_HEIGHT = 43
+
+
+colors = {
+    'dark_wall': libtcod.Color(0, 0, 100),
+    'dark_ground': libtcod.Color(50, 50, 150)}
+
 
 
 def create_player():
@@ -31,9 +53,9 @@ def create_player():
                 "Inventory"     : {
                                 }
     }
-    engine.add_to_inventory(player, ["club", "miecz", "miecz", "łuk", "proca"])
-    engine.add_to_inventory(player, ["chocolate", "bananas", "apples"])
-    items.equipWeapon(player, "club")
+    #engine.add_to_inventory(player, ["club", "miecz", "miecz", "łuk", "proca"])
+    #engine.add_to_inventory(player, ["chocolate", "bananas", "apples"])
+    #items.equipWeapon(player, "club")
 
     return player
     '''
@@ -54,18 +76,31 @@ def main():
     libtcod.console_init_root(SCREEN_WIDTH, SCREEN_HEIGHT, 'Hashed warrior stories', False)
     con = libtcod.console_new(SCREEN_WIDTH, SCREEN_HEIGHT)
 
+
+    #### CREATING NEW CONSOLE PANEL1 WITH HP
+    panel = libtcod.console_new(SCREEN_WIDTH, PANEL_HEIGHT)
+
+
     player = create_player()
-    engine.damage_calculate(player)
+    #engine.damage_calculate(player)
     level = 1
     board = engine.create_board(level)
 
+    #fov_map = initialize_fov(game_map)
+    message_log = MessageLog(MESSAGE_X, MESSAGE_WIDTH, MESSAGE_HEIGHT)
+    
     key = libtcod.Key()
     mouse = libtcod.Mouse()
+    
 
     while not libtcod.console_is_window_closed():
         libtcod.sys_check_for_event(libtcod.EVENT_KEY_PRESS, key, mouse)
 
         ui.display_board(board, con)
+        
+        render_functions.render_all(con, panel, entities, player, game_map, fov_map, fov_recompute, message_log, SCREEN_WIDTH,
+                  SCREEN_HEIGHT, BAR_WIDTH, PANEL_HEIGHT, PANEL_Y, mouse, colors)
+
         libtcod.console_set_default_foreground(con, libtcod.pink)
         libtcod.console_put_char(con, player['position']['x'], player['position']['y'], '@', libtcod.BKGND_NONE)
         libtcod.console_blit(con, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, 0, 0, 0)
