@@ -27,9 +27,8 @@ def create_player():
                 "equipped"      : {"weapon": {},
                                    "armor": items.items_list()["armor"]["robe"]},
                 # NEED TO VALIDATE IF ADD TO INVENTORY FUNCTION IMPLEMENTS CATEGORIES FOR ITEMS
-                "Inventory"     : { "food items": {
+                "Inventory"     : {  "food items": {
                                                     "chocolate" : 1,
-                                                    "bananas"   : 3,
                                                     "apples"    : 2
                                                 },
                                     "weapon items": {
@@ -100,7 +99,7 @@ def main():
                 player['position']['y'] = PLAYER_START_Y
 
         if go_to_inventory:
-            ui.display_inventory(player, board, con)
+            ui.display_inventory(player, con)
 
         if exit:
             return True
