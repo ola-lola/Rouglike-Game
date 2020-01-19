@@ -1,5 +1,6 @@
 import tcod as libtcod
-import util
+from input_handlers import handle_keys
+import items
 
 
 BOARD_BACKGROUND_SYMBOL = "."
@@ -12,8 +13,12 @@ MONSTER_1 = "G"
 MONSTER_2 = "Y"
 MONSTER_3 = "R"
 
+SCREEN_WIDTH = 80
+SCREEN_HEIGHT = 50
+
 
 def display_board(board, window):
+    horizontal_offset = int((SCREEN_WIDTH/2)-(len(board)/2))
     for i, line in enumerate(board):
         for j, char in enumerate(line):
             if char == WALL_SYMBOL:
@@ -32,7 +37,7 @@ def display_board(board, window):
                 libtcod.console_set_default_foreground(window, libtcod.dark_red)
             else:
                 libtcod.console_set_default_foreground(window, libtcod.light_azure)
-            libtcod.console_put_char(window, i, j, char, libtcod.BKGND_NONE)
+            libtcod.console_put_char(window, (i+horizontal_offset), j, char, libtcod.BKGND_NONE)
 
 
 def calculate_max_column_width(column_name, column_data):
@@ -53,42 +58,72 @@ def print_table(player): # <-- TO BE REFACTORED - REPEATING CODE BLOCKS
     max_lcol = calculate_max_column_width('Inventory', player)
     # max_rcol = calculate_max_column_width('Inventory', player.values()) <-- NEVER USED
 
-    print((max_lcol + 1) * "-" + (max_lcol + 2) * "-")
-    print(f"{'~ WEAPON ~':^{max_lcol}} | {'count':^{max_lcol}}")
-    print((max_lcol + 1) * "-" + (max_lcol + 2) * "-")
+    string_to_print = "" \
+    + ((max_lcol + 1) * "-" + (max_lcol + 2) * "-") + "\n" \
+    + (f"{'~ WEAPON ~':^{max_lcol}} | {'count':^{max_lcol}}") + "\n" \
+    + ((max_lcol + 1) * "-" + (max_lcol + 2) * "-") + "\n"
 
     for k, v in player['Inventory']['weapon items'].items():
-        print(f"{k:^{max_lcol}} | {v:^{max_lcol}}")
-    print((max_lcol + 1) * "-" + (max_lcol + 2) * "-")
+        string_to_print += (f"{k:^{max_lcol}} | {v:^{max_lcol}}") + "\n"
+    string_to_print += ((max_lcol + 1) * "-" + (max_lcol + 2) * "-") + "\n"
 
-    print(f"{'~ FOOD ~':^{max_lcol}} | {'count':^{max_lcol}}")
-    print((max_lcol + 1) * "-" + (max_lcol + 2) * "-")
+    string_to_print += (f"{'~ FOOD ~':^{max_lcol}} | {'count':^{max_lcol}}") + "\n"
+    string_to_print += ((max_lcol + 1) * "-" + (max_lcol + 2) * "-") + "\n"
 
     for k, v in player['Inventory']['food items'].items():
-        print(f"{k:^{max_lcol}} | {v:^{max_lcol}}")
-    print((max_lcol + 1) * "-" + (max_lcol + 2) * "-")
+        string_to_print += (f"{k:^{max_lcol}} | {v:^{max_lcol}}") + "\n"
+    string_to_print += ((max_lcol + 1) * "-" + (max_lcol + 2) * "-") + "\n"
 
-    print(f"{'~ *** ~':^{max_lcol}} | {'count':^{max_lcol}}")
-    print((max_lcol + 1) * "-" + (max_lcol + 2) * "-")
+    string_to_print += (f"{'~ *** ~':^{max_lcol}} | {'count':^{max_lcol}}") + "\n"
+    string_to_print += ((max_lcol + 1) * "-" + (max_lcol + 2) * "-") + "\n"
 
     for k, v in player['Inventory']['special items'].items():
-        print(f"{k:^{max_lcol}} | {v:^{max_lcol}}")
-    print((max_lcol + 1) * "-" + (max_lcol + 2) * "-")
+        string_to_print += (f"{k:^{max_lcol}} | {v:^{max_lcol}}") + "\n"
+    string_to_print += ((max_lcol + 1) * "-" + (max_lcol + 2) * "-") + "\n"
+
+    return string_to_print
+    '''
+    Creates a 'player' dictionary for storing all player related information - i.e. player icon, player position.
+    Fell free to extend this dictionary!
+
+    Returns:
+    dictionary
+    '''
 
 
 def display_inventory(player, board, window):
-    util.clear_screen()
+    string_inventory = print_table(player)
+    inventory_to_display = string_inventory.split("\n")
+    horizontal_offset = int((SCREEN_WIDTH/2)-(len(inventory_to_display[0])/2))
+    vertical_offset = int((SCREEN_HEIGHT/2)-(len(inventory_to_display)/2))
+
+    key = libtcod.Key()
+    mouse = libtcod.Mouse()
+
     is_in_inventory = True
+    libtcod.console_clear(window)
     while is_in_inventory:
-        print_table(player)
+
+        libtcod.sys_check_for_event(libtcod.EVENT_KEY_PRESS, key, mouse)
+
+        for i, line in enumerate(inventory_to_display):
+            for j, char in enumerate(line):
+                libtcod.console_set_default_foreground(window, libtcod.white)
+                libtcod.console_put_char(window, j+horizontal_offset, i+vertical_offset, char, libtcod.BKGND_NONE)
+                libtcod.console_blit(window, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, 0, 0, 0)
+                libtcod.console_flush()
+
         # Press 'i' to continue game on a board
-        key = util.key_pressed()
-        if key == 'i':
+        action = handle_keys(key)
+        fullscreen = action.get('fullscreen')
+        go_out_from_inventory = action.get('go_to_inventory')
+
+        if fullscreen:
+            libtcod.console_set_fullscreen(not libtcod.console_is_fullscreen())
+
+        if go_out_from_inventory:
+            libtcod.console_clear(window)
             is_in_inventory = False
-            display_board(board, window)
-        else:
-            pass
-        util.clear_screen()
     '''
     Displays complete game board on the screen
 

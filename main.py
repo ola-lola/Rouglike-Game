@@ -1,6 +1,5 @@
 import tcod as libtcod
 from input_handlers import handle_keys
-import util
 import engine
 import ui
 import items
@@ -60,11 +59,7 @@ def create_player():
 
 
 def main():
-    # player = create_player()
-    # level = 1
-    # board = engine.create_board(level)
-
-    libtcod.console_set_custom_font('arial10x10.png', libtcod.FONT_TYPE_GREYSCALE | libtcod.FONT_LAYOUT_TCOD)
+    libtcod.console_set_custom_font('arial12x12.png', libtcod.FONT_TYPE_GREYSCALE | libtcod.FONT_LAYOUT_TCOD)
     libtcod.console_init_root(SCREEN_WIDTH, SCREEN_HEIGHT, 'Hashed warrior stories', False)
     con = libtcod.console_new(SCREEN_WIDTH, SCREEN_HEIGHT)
 
@@ -72,6 +67,8 @@ def main():
     engine.damage_calculate(player)
     level = 1
     board = engine.create_board(level)
+
+    horizontal_offset = int((SCREEN_WIDTH/2)-(len(board)/2))
 
     key = libtcod.Key()
     mouse = libtcod.Mouse()
@@ -81,7 +78,7 @@ def main():
 
         ui.display_board(board, con)
         libtcod.console_set_default_foreground(con, libtcod.pink)
-        libtcod.console_put_char(con, player['position']['x'], player['position']['y'], '@', libtcod.BKGND_NONE)
+        libtcod.console_put_char(con, player['position']['x']+horizontal_offset, player['position']['y'], '@', libtcod.BKGND_NONE)
         libtcod.console_blit(con, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, 0, 0, 0)
         libtcod.console_flush()
 
@@ -96,6 +93,7 @@ def main():
 
         if move:
             dx, dy = move
+
             engine.verify_move_is_possible(dx, dy, board, player, level)
             if engine.is_next_level(player["position"]["x"], player["position"]["y"], board, ">"):
                 level += 1
