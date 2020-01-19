@@ -70,7 +70,7 @@ def print_table(player):
         string_to_print = separator
 
         for category in player['Inventory']:
-            string_to_print += (f"{category:^{max_lcol}} | {'count':^{max_lcol}}") + "\n" \
+            string_to_print += (f"{category.upper():^{max_lcol}} | {'COUNT':^{max_lcol}}") + "\n" \
                 + separator
             for k, v in player['Inventory'][category].items():
                 string_to_print += (f"{k:^{max_lcol}} | {v:^{max_lcol}}") + "\n"

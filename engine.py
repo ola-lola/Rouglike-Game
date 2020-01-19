@@ -123,6 +123,7 @@ def unequip(player, weaponName):
     player["equipped"]["weapons"][weaponName].pop()
     add_to_inventory(player, weaponName)
 
+
 def add_to_inventory_category(player, item, category):
     if item not in player["Inventory"][category].keys():
         player["Inventory"][category][item] = 1
@@ -131,10 +132,11 @@ def add_to_inventory_category(player, item, category):
 
 
 def add_to_inventory(player, added_items):
+    all_available_items = items.items_list()
     # Doesn't work for single items, expects a list as param
     for item in added_items:
-        for category in items.item_list().keys():
-            if item in items.item_list()[category]:
+        for category in all_available_items.keys():
+            if item in all_available_items[category]:
                 add_to_inventory_category(player, item, category)
     return player
 

@@ -31,11 +31,12 @@ def create_player():
                                                     "chocolate" : 1,
                                                     "apples"    : 2
                                                 },
-                                    "weapon items": {
+                                    "weapons": {
                                                     "miecz"     : 2,
-                                                    "łuk"       : 1,
+                                                    "luk"       : 1,
                                                     "proca"     : 4
                                                     },
+                                    "armor" : {},
                                     "special items": {
                                                     "key"       : 2
                                                     }
@@ -43,7 +44,6 @@ def create_player():
     }
     # engine.add_to_inventory(player, ["club", "miecz", "miecz", "łuk", "proca"])
     # engine.add_to_inventory(player, ["chocolate", "bananas", "apples"])
-    # items.equipWeapon(player, "club")
 
     return player
     '''
