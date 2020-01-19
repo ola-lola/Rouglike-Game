@@ -27,12 +27,24 @@ def create_player():
                 "equipped"      : {"weapon": {},
                                    "armor": items.items_list()["armor"]["robe"]},
                 # NEED TO VALIDATE IF ADD TO INVENTORY FUNCTION IMPLEMENTS CATEGORIES FOR ITEMS
-                "Inventory"     : {
+                "Inventory"     : { "food items": {
+                                                    "chocolate" : 1,
+                                                    "bananas"   : 3,
+                                                    "apples"    : 2
+                                                },
+                                    "weapon items": {
+                                                    "miecz"     : 2,
+                                                    "łuk"       : 1,
+                                                    "proca"     : 4
+                                                    },
+                                    "special items": {
+                                                    "key"       : 2
+                                                    }
                                 }
     }
-    engine.add_to_inventory(player, ["club", "miecz", "miecz", "łuk", "proca"])
-    engine.add_to_inventory(player, ["chocolate", "bananas", "apples"])
-    items.equipWeapon(player, "club")
+    # engine.add_to_inventory(player, ["club", "miecz", "miecz", "łuk", "proca"])
+    # engine.add_to_inventory(player, ["chocolate", "bananas", "apples"])
+    # items.equipWeapon(player, "club")
 
     return player
     '''
@@ -50,7 +62,7 @@ def main():
     con = libtcod.console_new(SCREEN_WIDTH, SCREEN_HEIGHT)
 
     player = create_player()
-    engine.damage_calculate(player)
+    # engine.damage_calculate(player)
     level = 1
     board = engine.create_board(level)
 
