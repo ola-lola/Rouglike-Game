@@ -1,3 +1,5 @@
+# KLUCZE ITEMS - zmienne globalne
+
 # Define banned items for specific monster type
 greenItems = [  "long_sword",
                 "two-handed_sword",
@@ -16,7 +18,7 @@ yellowItems = [ "light_sabre",
 
 def items_list():
     items_list = {
-                    "consumables": {
+        "food items": {
                     "apple": {
                             "hp"    : 25,
                             "weight": 5
@@ -45,6 +47,10 @@ def items_list():
             "chain_mail": {"armor": 10, "weight": 25},
             "plate_mail": {"armor": 25, "weight": 40},
             "armor_of_doom": {"armor": 40, "weight": 50}
+        },
+        "special items": {
+            "gold coin" : {},
+            "key"       : {}
         }
     }
     return items_list
@@ -63,5 +69,3 @@ def mob_inv(inv, banned):
                 continue
     updated_inv = inv
     return updated_inv
-
-

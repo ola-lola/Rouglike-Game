@@ -1,6 +1,7 @@
 import tcod as libtcod
 from input_handlers import handle_keys
 import items
+import monsters
 
 
 BOARD_BACKGROUND_SYMBOL = "."
@@ -12,9 +13,20 @@ WATER_SYMBOL = "o"
 MONSTER_1 = "G"
 MONSTER_2 = "Y"
 MONSTER_3 = "R"
+BOSS = "B"
 
 SCREEN_WIDTH = 80
 SCREEN_HEIGHT = 53
+
+
+def create_new_game_window(screen_width, screen_height):
+    # set window font
+    libtcod.console_set_custom_font('arial12x12.png', libtcod.FONT_TYPE_GREYSCALE | libtcod.FONT_LAYOUT_TCOD)
+    # create window with a given dimensions, name and False - not full screen
+    libtcod.console_init_root(screen_width, screen_height, 'Hashed warrior stories', False)
+    # initiate window and write it under a variable
+    window = libtcod.console_new(screen_width, screen_height)
+    return window
 
 
 def display_board(board, window):
@@ -40,10 +52,15 @@ def display_board(board, window):
             libtcod.console_put_char(window, (i+horizontal_offset), j, char, libtcod.BKGND_NONE)
 
 
-def calculate_max_column_width(column_name, column_data):
+def calculate_max_column_width(column_names, column_data):
     max_column_width = 0
-    if max_column_width <= len(column_name):
-        max_column_width = len(column_name)
+    if len(column_names) == 1:
+        if max_column_width <= len(column_names):
+            max_column_width = len(column_names)
+    else:
+        for name in column_names:
+            if max_column_width <= len(column_names):
+                max_column_width = len(column_names)
     if len(column_data) > 1:
         for item in column_data:
             if max_column_width < len(str(item)):
@@ -54,44 +71,27 @@ def calculate_max_column_width(column_name, column_data):
     return max_column_width
 
 
-def print_table(player): # <-- TO BE REFACTORED - REPEATING CODE BLOCKS
-    max_lcol = calculate_max_column_width('Inventory', player)
-    # max_rcol = calculate_max_column_width('Inventory', player.values()) <-- NEVER USED
+def print_table(player):
+    # max_lcol TO BE UPDATED - PROBABLY WRONG
+    max_lcol = calculate_max_column_width(player['Inventory'].keys(), player['Inventory'].values())
 
-    string_to_print = "" \
-    + ((max_lcol + 1) * "-" + (max_lcol + 2) * "-") + "\n" \
-    + (f"{'~ WEAPON ~':^{max_lcol}} | {'count':^{max_lcol}}") + "\n" \
-    + ((max_lcol + 1) * "-" + (max_lcol + 2) * "-") + "\n"
+    if player['Inventory'] == {}:
+        string_to_print = "Player's inventory is empty"
+    else:
+        separator = ((max_lcol + 1) * "-" + (max_lcol + 2) * "-") + "\n"
+        string_to_print = separator
 
-    for k, v in player['Inventory']['weapon items'].items():
-        string_to_print += (f"{k:^{max_lcol}} | {v:^{max_lcol}}") + "\n"
-    string_to_print += ((max_lcol + 1) * "-" + (max_lcol + 2) * "-") + "\n"
-
-    string_to_print += (f"{'~ FOOD ~':^{max_lcol}} | {'count':^{max_lcol}}") + "\n"
-    string_to_print += ((max_lcol + 1) * "-" + (max_lcol + 2) * "-") + "\n"
-
-    for k, v in player['Inventory']['food items'].items():
-        string_to_print += (f"{k:^{max_lcol}} | {v:^{max_lcol}}") + "\n"
-    string_to_print += ((max_lcol + 1) * "-" + (max_lcol + 2) * "-") + "\n"
-
-    string_to_print += (f"{'~ *** ~':^{max_lcol}} | {'count':^{max_lcol}}") + "\n"
-    string_to_print += ((max_lcol + 1) * "-" + (max_lcol + 2) * "-") + "\n"
-
-    for k, v in player['Inventory']['special items'].items():
-        string_to_print += (f"{k:^{max_lcol}} | {v:^{max_lcol}}") + "\n"
-    string_to_print += ((max_lcol + 1) * "-" + (max_lcol + 2) * "-") + "\n"
+        for category in player['Inventory']:
+            string_to_print += (f"{category.upper():^{max_lcol}} | {'COUNT':^{max_lcol}}") + "\n" \
+                + separator
+            for k, v in player['Inventory'][category].items():
+                string_to_print += (f"{k:^{max_lcol}} | {v:^{max_lcol}}") + "\n"
+            string_to_print += separator
 
     return string_to_print
-    '''
-    Creates a 'player' dictionary for storing all player related information - i.e. player icon, player position.
-    Fell free to extend this dictionary!
-
-    Returns:
-    dictionary
-    '''
 
 
-def display_inventory(player, board, window):
+def display_inventory(player, window):
     string_inventory = print_table(player)
     inventory_to_display = string_inventory.split("\n")
     horizontal_offset = int((SCREEN_WIDTH/2)-(len(inventory_to_display[0])/2))
@@ -162,6 +162,39 @@ def display_bar(player, window, board):
                 libtcod.console_set_default_foreground(window, libtcod.white)
             libtcod.console_put_char(window, j+horizontal_offset, i+vertical_offset, char, libtcod.BKGND_NONE)
 
+
+
+def print_bar(player): 
+    max_lcol = calculate_max_column_width('Inventory', player)
+
+    string_to_print_bar = (SCREEN_WIDTH * "-") + "\n"
+
+    for k, v in player.items():
+        string_to_print_bar += (f"{k:^{max_lcol}}:{str(v):^{max_lcol}} | ")
+    string_to_print_bar += "\n" + (SCREEN_WIDTH * "-") + "\n"
+    
+
+    return string_to_print_bar
+
+
+def display_bar(player, window, board):
+
+    string_bar = print_bar(player)
+    bar_to_display = string_bar.split("\n")
+   
+    horizontal_offset = 0
+    vertical_offset = int(SCREEN_HEIGHT - 3)
+
+    for i, line in enumerate(bar_to_display):
+        for j, char in enumerate(line):
+            if char == "-":
+                libtcod.console_set_default_foreground(window, libtcod.dark_green)
+            elif char == "|":
+                libtcod.console_set_default_foreground(window, libtcod.dark_green)
+     
+            else:
+                libtcod.console_set_default_foreground(window, libtcod.white)
+            libtcod.console_put_char(window, j+horizontal_offset, i+vertical_offset, char, libtcod.BKGND_NONE)
 
 
 def display_mob(mob):

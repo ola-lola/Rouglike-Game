@@ -15,6 +15,8 @@ def handle_keys(key):
     elif key.vk == libtcod.KEY_CHAR:
         if key.c == ord('i'):
             return {'go_to_inventory': True}
+        if key.c == ord('p'):
+            return {'see_player_statistics': True}
 
     if key.vk == libtcod.KEY_ENTER and key.lalt:
         # Alt+Enter: toggle full screen
