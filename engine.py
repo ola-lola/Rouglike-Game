@@ -125,6 +125,7 @@ def equipWeapon(player, weaponName):
     player["equipped"]["weapons"][weaponName] = weapon_entry
     remove_from_inventory(player, weaponName)
 
+
 def unequip(player, weaponName):
     if weaponName not in player["equipped"]["weapons"]:
         return False

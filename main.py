@@ -20,6 +20,7 @@ def main():
         libtcod.sys_check_for_event(libtcod.EVENT_KEY_PRESS, key, mouse)
         # DISPLAY BOARD + PLAYER ON BOARD
         ui.display_board(board, game_window)
+        ui.display_bar(player, game_window, board)
         engine.put_player_on_board(game_window, ui.SCREEN_WIDTH, ui.SCREEN_HEIGHT, board, player)
         # GATHER KEY INPUT
         action = handle_keys(key)
