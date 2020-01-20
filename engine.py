@@ -66,7 +66,7 @@ def verify_move_is_possible(move_x, move_y, board, player, level):
         board[x][y] = ' '
 
     if is_obstacle(x_new, y_new, board,[i for i in monster_icons()]):
-        fight_regular(mobType)
+        fight_regular(mobType) # dodac komunikat np. to nie jest zaimplem. w tej wersji
 
     # elif is_next_level(x_new, y_new, board, EXIT_SYMBOL):
     #     level += 1

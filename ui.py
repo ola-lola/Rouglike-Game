@@ -17,6 +17,16 @@ SCREEN_WIDTH = 80
 SCREEN_HEIGHT = 50
 
 
+def create_new_game_window(screen_width, screen_height):
+    # set window font
+    libtcod.console_set_custom_font('arial12x12.png', libtcod.FONT_TYPE_GREYSCALE | libtcod.FONT_LAYOUT_TCOD)
+    # create window with a given dimensions, name and False - not full screen
+    libtcod.console_init_root(screen_width, screen_height, 'Hashed warrior stories', False)
+    # initiate window and write it under a variable
+    window = libtcod.console_new(screen_width, screen_height)
+    return window
+
+
 def display_board(board, window):
     horizontal_offset = int((SCREEN_WIDTH/2)-(len(board)/2))
     for i, line in enumerate(board):

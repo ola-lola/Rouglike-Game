@@ -1,3 +1,5 @@
+# KLUCZE ITEMS - zmienne globalne
+
 # Define banned items for specific monster type
 greenItems = [  "long_sword",
                 "two-handed_sword",
@@ -63,5 +65,3 @@ def mob_inv(inv, banned):
                 continue
     updated_inv = inv
     return updated_inv
-
-
