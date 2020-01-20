@@ -1,3 +1,7 @@
+import items
+import engine
+
+
 PLAYER_ICON = '@'
 PLAYER_START_X = 3
 PLAYER_START_Y = 3
@@ -30,10 +34,12 @@ def create_player():
                                                     },
                                     "armor" : {},
                                     "special items": {
+                                                    "gold coin" : 0,
                                                     "key"       : 2
                                                     }
                                 }
     }
+    # player = engine.add_to_inventory(player, ["gold coin", "gold_coin", "gold coin"])
     # engine.add_to_inventory(player, ["club", "miecz", "miecz", "łuk", "proca"])
     # engine.add_to_inventory(player, ["chocolate", "bananas", "apples"])
 

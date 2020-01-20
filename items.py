@@ -47,6 +47,10 @@ def items_list():
             "chain_mail": {"armor": 10, "weight": 25},
             "plate_mail": {"armor": 25, "weight": 40},
             "armor_of_doom": {"armor": 40, "weight": 50}
+        },
+        "special items": {
+            "gold coin" : {},
+            "key"       : {}
         }
     }
     return items_list

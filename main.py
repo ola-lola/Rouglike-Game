@@ -2,7 +2,8 @@ import tcod as libtcod
 from input_handlers import handle_keys
 import engine
 import ui
-from player import create_player
+from player_def import create_player
+import player_def
 
 
 def main():
@@ -29,12 +30,12 @@ def main():
         # HANDLE USER INPUT
         if move:
             dx, dy = move
-            engine.verify_move_is_possible(dx, dy, board, player, level)
+            player = engine.verify_move_is_possible(dx, dy, board, player, level)
             if engine.is_next_level(player["position"]["x"], player["position"]["y"], board, ui.EXIT_SYMBOL):
                 level += 1
                 board = engine.create_board(level)
-                player['position']['x'] = ui.PLAYER_START_X
-                player['position']['y'] = ui.PLAYER_START_Y
+                player['position']['x'] = player_def.PLAYER_START_X
+                player['position']['y'] = player_def.PLAYER_START_Y
         if go_to_inventory:
             ui.display_inventory(player, game_window)
         if fullscreen:

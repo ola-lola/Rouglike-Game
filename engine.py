@@ -3,16 +3,7 @@ import file_operations
 import monsters
 import random
 import items
-
-
-BOARD_BACKGROUND_SYMBOL = "."
-WALL_SYMBOL = "#"
-EXIT_SYMBOL = ">"
-TREE_SYMBOL = "|"
-WATER_SYMBOL = "o"
-
-PLAYER_START_X = 3
-PLAYER_START_Y = 3
+import ui
 
 
 def monster_icons():
@@ -53,6 +44,13 @@ def is_next_level(x_coordinate, y_coordinate, board, border_exit_symbol):
         return False
 
 
+def is_newly_explored(x_coordinate, y_coordinate, board, player, gold_coin_symbol):
+    if board[x_coordinate][y_coordinate] in gold_coin_symbol:
+        return True
+    else:
+        return False
+
+
 def verify_move_is_possible(move_x, move_y, board, player, level):
     x = player['position']['x']
     y = player['position']['y']
@@ -60,19 +58,21 @@ def verify_move_is_possible(move_x, move_y, board, player, level):
     x_new = x + move_x
     y_new = y + move_y
 
-    if not is_obstacle(x_new, y_new, board, [WALL_SYMBOL, TREE_SYMBOL, WATER_SYMBOL]):
+    if not is_obstacle(x_new, y_new, board, [ui.WALL_SYMBOL, ui.TREE_SYMBOL, ui.WATER_SYMBOL]):
         player['position']['x'] = x_new
         player['position']['y'] = y_new
         board[x][y] = ' '
 
-    if is_obstacle(x_new, y_new, board,[i for i in monster_icons()]):
+    if is_obstacle(x_new, y_new, board, [i for i in monster_icons()]):
         fight_regular(mobType) # dodac komunikat np. to nie jest zaimplem. w tej wersji
 
+    if is_newly_explored(x_new, y_new, board, player, ui.BOARD_BACKGROUND_SYMBOL):
+        player = add_to_inventory(player, ['gold coin'])
     # elif is_next_level(x_new, y_new, board, EXIT_SYMBOL):
     #     level += 1
         # player['position']['x'] = PLAYER_START_X
         # player['position']['y'] = PLAYER_START_Y
-    return level
+    return player
         
     '''
     Modifies player coordinates if allowed (player cannot move through walls etc)

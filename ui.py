@@ -1,6 +1,7 @@
 import tcod as libtcod
 from input_handlers import handle_keys
 import items
+import monsters
 
 
 BOARD_BACKGROUND_SYMBOL = "."
@@ -12,6 +13,7 @@ WATER_SYMBOL = "o"
 MONSTER_1 = "G"
 MONSTER_2 = "Y"
 MONSTER_3 = "R"
+BOSS = "B"
 
 SCREEN_WIDTH = 80
 SCREEN_HEIGHT = 50

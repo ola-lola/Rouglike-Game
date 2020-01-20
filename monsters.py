@@ -1,11 +1,12 @@
 import items
+import ui
 
 
 # Define monsters attrbts/inventory function, needed as a dict with constant data when imported for operations in other modules
 def monsters_overview():
     monsters = {
         "green": {
-            "icon": "G",
+            "icon": ui.MONSTER_1,
             "damage": 10,
             "hps": 50,
             "experience": 25,
@@ -14,21 +15,21 @@ def monsters_overview():
             "inventory": items.mob_inv(items.items_list(),items.greenItems)
             },
         "yellow": {
-            "icon": "Y",
+            "icon": ui.MONSTER_2,
             "damage": 10,
             "hps": 50,
             "experience": 25,
             "inventory": items.mob_inv(items.items_list(), items.yellowItems)
             },
         "red": {
-            "icon": "R",
+            "icon": ui.MONSTER_3,
             "damage": 10,
             "hps": 50,
             "experience": 25,
             "inventory": items.items_list()
             },
         "boss": {
-            "icon": "B"
+            "icon": ui.BOSS
         }
     }
     return monsters
