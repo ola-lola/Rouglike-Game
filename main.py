@@ -8,7 +8,7 @@ PLAYER_ICON = '@'
 PLAYER_START_X = 3
 PLAYER_START_Y = 3
 SCREEN_WIDTH = 80
-SCREEN_HEIGHT = 50
+SCREEN_HEIGHT = 53
 
 
 def create_player():
@@ -24,15 +24,28 @@ def create_player():
                                 'x': PLAYER_START_X,
                                 'y': PLAYER_START_Y,
                                 },
-                "equipped"      : {"weapon": {},
+                "equipped"      : {"weapon": {"stick" : 1},
                                    "armor": items.items_list()["armor"]["robe"]},
                 # NEED TO VALIDATE IF ADD TO INVENTORY FUNCTION IMPLEMENTS CATEGORIES FOR ITEMS
-                "Inventory"     : {
+                "Inventory"     : { "food items": {
+                                                    "chocolate" : 1,
+                                                    "bananas"   : 3,
+                                                    "apples"    : 2
+                                                },
+                                    "weapon items": {
+                                                    "miecz"     : 2,
+                                                    "łuk"       : 1,
+                                                    "proca"     : 4
+                                                    },
+                                    "special items": {
+                                                    "key"       : 2
+                                                    }
+                            
                                 }
     }
-    engine.add_to_inventory(player, ["club", "miecz", "miecz", "łuk", "proca"])
-    engine.add_to_inventory(player, ["chocolate", "bananas", "apples"])
-    items.equipWeapon(player, "club")
+    #engine.add_to_inventory(player, ["club", "miecz", "miecz", "łuk", "proca"])
+    #engine.add_to_inventory(player, ["chocolate", "bananas", "apples"])
+    #items.equipWeapon(player, "club")
 
     return player
     '''
@@ -50,9 +63,10 @@ def main():
     con = libtcod.console_new(SCREEN_WIDTH, SCREEN_HEIGHT)
 
     player = create_player()
-    engine.damage_calculate(player)
+    #engine.damage_calculate(player)
     level = 1
     board = engine.create_board(level)
+    
 
     horizontal_offset = int((SCREEN_WIDTH/2)-(len(board)/2))
 
@@ -63,6 +77,7 @@ def main():
         libtcod.sys_check_for_event(libtcod.EVENT_KEY_PRESS, key, mouse)
 
         ui.display_board(board, con)
+        ui.display_bar(player, con, board)
         libtcod.console_set_default_foreground(con, libtcod.pink)
         libtcod.console_put_char(con, player['position']['x']+horizontal_offset, player['position']['y'], '@', libtcod.BKGND_NONE)
         libtcod.console_blit(con, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, 0, 0, 0)
