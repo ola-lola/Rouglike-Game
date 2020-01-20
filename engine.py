@@ -1,3 +1,4 @@
+import tcod as libtcod
 import file_operations
 import monsters
 import random
@@ -86,12 +87,19 @@ def verify_move_is_possible(move_x, move_y, board, player, level):
     '''
 
 
-def put_player_on_board(board, player):
+def put_player_on_board(window, window_width, window_height, board, player):
+    # deprecated: 
+    # x = player['position']['x']
+    # y = player['position']['y']
 
-    x = player['position']['x']
-    y = player['position']['y']
+    # board[x][y] = player['icon']
 
-    board[x][y] = player['icon']
+    libtcod.console_set_default_foreground(window, libtcod.pink)
+    horizontal_offset = int((window_width/2)-(len(board)/2))
+    libtcod.console_put_char(window, player['position']['x']+horizontal_offset, player['position']['y'], player['icon'], libtcod.BKGND_NONE)
+    libtcod.console_blit(window, 0, 0, window_width, window_height, 0, 0, 0)
+    libtcod.console_flush()
+    libtcod.console_put_char(window, player['position']['x'], player['position']['y'], ' ', libtcod.BKGND_NONE)
 
     # TUTAJ IF-y dot food/item/mob
 
