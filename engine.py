@@ -186,19 +186,48 @@ def generate_bossRoom():
 
 def damage_calculate(character):
     # Add null check for no weapons equipped
-    weapontype = character["equipped"]["weapon"]["wep_name"]
-    true_damage = character["strenght"] +\
-    character["equipped"]["weapon"]["wep_stats"]["damage"] + random.randint(1,6)
-
-    print(true_damage)
+    try:
+        weapontype = character["equipped"]["weapon"]["damage"]
+        true_damage = character["strenght"] + weapontype + random.randint(1,10)
+        return true_damage
+        # Czy to key error?
+    except KeyError:
+        true_damage = character["strenght"] + random.randint(1,10)
+        return true_damage
 
 def health_calculate(character):
-    health = character["hps"] +\
-        character["equipped"]["armor"]
+    try:
+        health = character["hps"] + character["equipped"]["armor"]["armor"]
+    except:
+        health = character["hps"]
+    return health
 
+def find_mobStats(dictionary, mobName):
+    for k,v in dictionary.items():
+        for nested_keys in v.items():
+            if mobName in nested_keys:
+                return v  
 
-def fight_regular(player, mobType):
-
+def fight_regular(player, mob_dict, mob):
+    player_hps = int(health_calculate(player))
+    mob_hps = int(health_calculate(find_mobStats(mob_dict, mob)))
+    while True:
+        if player_hps <= 0:
+            print("FIGHT FINISHED\nYou died")
+            break
+        player_hps -= int(damage_calculate(find_mobStats(mob_dict, mob)))
+        print(f"The monster attacks you for {int(damage_calculate(find_mobStats(mob_dict, mob)))} damage.\
+                Your life remaining is: {player_hps}")
+        mob_hps -= int(damage_calculate(player))
+        if mob_hps <= 0:
+            mob_hps = 0
+            print(f"You attack the monster for {int(damage_calculate(player))} damage.\
+                 Monster's health remaining: {mob_hps}")
+            print("FIGHT FINISHED\nThe monster drops dead")
+            break
+        print(f"You attack the monster for {int(damage_calculate(player))} damage.\
+                 Monster's health remaining: {mob_hps}")
+        print()
     # Player attacks
     damage_calculate(player) 
 
@@ -213,5 +242,4 @@ def fight_boss():
 
 def fireball(direction):
     pass
-
 
