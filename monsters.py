@@ -23,7 +23,7 @@ def monsters_overview():
         "red": {
             "icon": ui.MONSTER_3,
             "strenght": 80,
-            "hps": 5250,
+            "hps": 520,
             "experience": 75,
             "inventory": items.items_list()
             },

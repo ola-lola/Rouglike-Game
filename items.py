@@ -18,7 +18,7 @@ yellowItems = [ "light_sabre",
 
 def items_list():
     items_list = {
-        "food items": {
+        "food_items": {
                     "apple": {
                             "hp"    : 25,
                             "weight": 5

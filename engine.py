@@ -159,11 +159,6 @@ def remove_from_inventory(player, removed_items):
                 player["Inventory"][category].pop(item)
     return player
 
-
-def random_mobPlace():
-    pass
-
-
 def random_mobMovement():
     pass
 
@@ -233,12 +228,27 @@ def fight_regular(player, mob_dict, mob):
                  Monster's health remaining: {mob_hps}")
         print()
 
-        
+def monster_loot(monster):
+    #random_consumbale = monster["inventory"]["food_items"]
+    loot_corpse = {}
+    try: 
+        loot_randomItem(monster, "food_items", 1, loot_corpse)
+        loot_randomItem(monster, "weapons", 2, loot_corpse)
+        loot_randomItem(monster, "armor", 2, loot_corpse)
+    except:
+        print("Not enough items to add to random monster inventory for looting")
+    return loot_corpse
 
-def fight_boss():
-    pass
+def loot_randomItem(monster, category, range_num, destination_dict):
+    for i in range(range_num):
+        random_pair = key, val = random.choice(list(monster["inventory"][category].items()))
+        x, y = random_pair     
+        destination_dict[x] = y
+    return destination_dict
 
 
-def fireball(direction):
-    pass
+
+#def fight_boss():
+    #pass
+
 

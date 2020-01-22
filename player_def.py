@@ -54,4 +54,5 @@ def create_player():
     dictionary
     '''
 
-engine.fight_regular(create_player(), monsters.monsters_overview(), ui.MONSTER_1)
+#engine.fight_regular(create_player(), monsters.monsters_overview(), ui.MONSTER_1)
+print(engine.monster_loot(engine.find_mobStats(monsters.monsters_overview(), ui.MONSTER_1)))
