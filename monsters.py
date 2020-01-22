@@ -15,15 +15,15 @@ def monsters_overview():
             },
         "yellow": {
             "icon": ui.MONSTER_2,
-            "strenght": 10,
-            "hps": 50,
+            "strenght": 40,
+            "hps": 150,
             "experience": 50,
             "inventory": items.mob_inv(items.items_list(), items.yellowItems)
             },
         "red": {
             "icon": ui.MONSTER_3,
-            "strenght": 10,
-            "hps": 50,
+            "strenght": 80,
+            "hps": 5250,
             "experience": 75,
             "inventory": items.items_list()
             },

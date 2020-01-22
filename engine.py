@@ -51,7 +51,7 @@ def is_newly_explored(x_coordinate, y_coordinate, board, player, gold_coin_symbo
         return False
 
 
-def verify_move_is_possible(move_x, move_y, board, player, level):
+def verify_move_is_possible(move_x, move_y, board, player, level, mob_dict, mob=None):
     x = player['position']['x']
     y = player['position']['y']
 
@@ -64,7 +64,8 @@ def verify_move_is_possible(move_x, move_y, board, player, level):
         board[x][y] = ' '
 
     if is_obstacle(x_new, y_new, board, [i for i in monster_icons()]):
-        fight_regular(mobType) # dodac komunikat np. to nie jest zaimplem. w tej wersji
+        mob = board[x_new][y_new]
+        fight_regular(player, mob_dict, mob) # dodac komunikat np. to nie jest zaimplem. w tej wersji
 
     if is_newly_explored(x_new, y_new, board, player, ui.BOARD_BACKGROUND_SYMBOL):
         player = add_to_inventory(player, ['gold coin'])
@@ -212,10 +213,13 @@ def fight_regular(player, mob_dict, mob):
     player_hps = int(health_calculate(player))
     mob_hps = int(health_calculate(find_mobStats(mob_dict, mob)))
     while True:
+        player_hps -= int(damage_calculate(find_mobStats(mob_dict, mob)))
+        player["hps"] = player_hps
         if player_hps <= 0:
+            player["hps"] = 0
+            print(f'Your life remaining is: {player["hps"]}')
             print("FIGHT FINISHED\nYou died")
             break
-        player_hps -= int(damage_calculate(find_mobStats(mob_dict, mob)))
         print(f"The monster attacks you for {int(damage_calculate(find_mobStats(mob_dict, mob)))} damage.\
                 Your life remaining is: {player_hps}")
         mob_hps -= int(damage_calculate(player))
@@ -228,11 +232,6 @@ def fight_regular(player, mob_dict, mob):
         print(f"You attack the monster for {int(damage_calculate(player))} damage.\
                  Monster's health remaining: {mob_hps}")
         print()
-    # Player attacks
-    damage_calculate(player) 
-
-    fight = True
-    #while fight:
 
         
 

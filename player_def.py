@@ -54,6 +54,4 @@ def create_player():
     dictionary
     '''
 
-#print(engine.damage_calculate(engine.find_mobStats(monsters.monsters_overview(), ui.MONSTER_1)))
 engine.fight_regular(create_player(), monsters.monsters_overview(), ui.MONSTER_1)
-#print(engine.find_mobStats(monsters.monsters_overview(), ui.MONSTER_1))
