@@ -16,7 +16,7 @@ MONSTER_3 = "R"
 BOSS = "B"
 
 SCREEN_WIDTH = 80
-SCREEN_HEIGHT = 50
+SCREEN_HEIGHT = 53
 
 
 def create_new_game_window(screen_width, screen_height):
@@ -131,19 +131,24 @@ def display_inventory(player, window):
     Nothing
     '''
 
-
 def print_bar(player): 
-    max_lcol = calculate_max_column_width('Inventory', player)
+    max_lcol = calculate_max_column_width('Name', [])
 
     string_to_print_bar = (SCREEN_WIDTH * "-") + "\n"
 
-    for k, v in player.items():
-        string_to_print_bar += (f"{k:^{max_lcol}}:{str(v):^{max_lcol}} | ")
+    string_to_print_bar += (f"{'Name':^{max_lcol}}:{str(player['Name']):^{max_lcol}} | ")
+    string_to_print_bar += (f"{'RACE':^{max_lcol}}:{str(player['race']):^{max_lcol}} | ")
+    string_to_print_bar += (f"{'XP':^{max_lcol}}:{str(player['experience']):^{max_lcol}} | ")
+    string_to_print_bar += (f"{'LVL':^{max_lcol}}:{str(player['lvl']):^{max_lcol}} | ")
+    string_to_print_bar += (f"{'STR':^{max_lcol}}:{str(player['strenght']):^{max_lcol}} | ")
+    string_to_print_bar += (f"{'HPS':^{max_lcol}}:{str(player['hps']):^{max_lcol}} | ")
+
+    #for k, v in player.items():
+        #string_to_print_bar += (f"{k:^{max_lcol}}:{str(v):^{max_lcol}} | ")
     string_to_print_bar += "\n" + (SCREEN_WIDTH * "-") + "\n"
     
 
     return string_to_print_bar
-
 
 def display_bar(player, window, board):
 
@@ -163,6 +168,8 @@ def display_bar(player, window, board):
             else:
                 libtcod.console_set_default_foreground(window, libtcod.white)
             libtcod.console_put_char(window, j+horizontal_offset, i+vertical_offset, char, libtcod.BKGND_NONE)
+
+
 
 
 def display_mob(mob):

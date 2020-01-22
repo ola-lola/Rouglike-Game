@@ -4,6 +4,7 @@ import monsters
 import random
 import items
 import ui
+from input_handlers import handle_keys
 
 
 def monster_icons():
@@ -65,7 +66,7 @@ def verify_move_is_possible(move_x, move_y, board, player, level, mob_dict, mob=
 
     if is_obstacle(x_new, y_new, board, [i for i in monster_icons()]):
         mob = board[x_new][y_new]
-        fight_regular(player, mob_dict, mob) # dodac komunikat np. to nie jest zaimplem. w tej wersji
+        fight_regular(0, player, mob_dict, mob) # dodac komunikat np. to nie jest zaimplem. w tej wersji
 
     if is_newly_explored(x_new, y_new, board, player, ui.BOARD_BACKGROUND_SYMBOL):
         player = add_to_inventory(player, ['gold coin'])
@@ -115,6 +116,7 @@ def put_player_on_board(window, window_width, window_height, board, player):
     Nothing
     '''
 
+
 def equipWeapon(player, weaponName):
     # Validate if item of same category already present, if present - unequip
     if weaponName not in player["inventory"]["weapons"]:
@@ -149,6 +151,7 @@ def add_to_inventory(player, added_items):
             if item in all_available_items[category]:
                 add_to_inventory_category(player, item, category)
     return player
+
 
 def remove_from_inventory(player, removed_items):
     for item in removed_items:
@@ -191,6 +194,7 @@ def damage_calculate(character):
         true_damage = character["strenght"] + random.randint(1,10)
         return true_damage
 
+
 def health_calculate(character):
     try:
         health = character["hps"] + character["equipped"]["armor"]["armor"]
@@ -198,35 +202,82 @@ def health_calculate(character):
         health = character["hps"]
     return health
 
+
 def find_mobStats(dictionary, mobName):
     for k,v in dictionary.items():
         for nested_keys in v.items():
             if mobName in nested_keys:
                 return v  
 
-def fight_regular(player, mob_dict, mob):
+
+def fight_regular(window, player, mob_dict, mob):
     player_hps = int(health_calculate(player))
     mob_hps = int(health_calculate(find_mobStats(mob_dict, mob)))
-    while True:
-        player_hps -= int(damage_calculate(find_mobStats(mob_dict, mob)))
-        player["hps"] = player_hps
-        if player_hps <= 0:
-            player["hps"] = 0
-            print(f'Your life remaining is: {player["hps"]}')
-            print("FIGHT FINISHED\nYou died")
-            break
-        print(f"The monster attacks you for {int(damage_calculate(find_mobStats(mob_dict, mob)))} damage.\
-                Your life remaining is: {player_hps}")
-        mob_hps -= int(damage_calculate(player))
-        if mob_hps <= 0:
-            mob_hps = 0
-            print(f"You attack the monster for {int(damage_calculate(player))} damage.\
-                 Monster's health remaining: {mob_hps}")
-            print("FIGHT FINISHED\nThe monster drops dead")
-            break
-        print(f"You attack the monster for {int(damage_calculate(player))} damage.\
-                 Monster's health remaining: {mob_hps}")
-        print()
+
+    are_fighting = True
+    libtcod.console_clear(window)
+
+    key = libtcod.Key()
+    mouse = libtcod.Mouse()
+
+    total_string_to_print = ''
+
+    fight_finished = False
+    while not fight_finished:
+
+        libtcod.sys_check_for_event(libtcod.EVENT_KEY_PRESS, key, mouse)
+
+        while are_fighting:
+            player_hps -= int(damage_calculate(find_mobStats(mob_dict, mob)))
+            player["hps"] = player_hps
+            if player_hps <= 0:
+                player["hps"] = 0
+                string_to_print = f'Your life remaining is: {player["hps"]}\n' \
+                    + 'FIGHT FINISHED\nYou died\n'
+                total_string_to_print += string_to_print
+                are_fighting = False
+                break
+            else:
+                string_to_print = f'The monster attacks you for {int(damage_calculate(find_mobStats(mob_dict, mob)))} damage.'\
+                        + f'Your life remaining is: {player_hps}\n'
+                total_string_to_print += string_to_print
+            mob_hps -= int(damage_calculate(player))
+            if mob_hps <= 0:
+                mob_hps = 0
+                string_to_print = f'You attack the monster for {int(damage_calculate(player))} damage.'\
+                    + f'Monster\'s health remaining: {mob_hps}\n' \
+                    + 'FIGHT FINISHED\nThe monster drops dead\n'
+                total_string_to_print += string_to_print
+                are_fighting = False
+                break
+            else:
+                string_to_print = f'You attack the monster for {int(damage_calculate(player))} damage.'\
+                    + f'Monster\'s health remaining: {mob_hps}\n'
+            total_string_to_print += string_to_print
+
+        total_string_to_print_list = total_string_to_print.split('\n')
+
+        for i, line in enumerate(total_string_to_print_list):
+            for j, char in enumerate(line):
+                libtcod.console_set_default_foreground(window, libtcod.white)
+                libtcod.console_put_char(window, j, i, char, libtcod.BKGND_NONE)
+                libtcod.console_blit(window, 0, 0, ui.SCREEN_WIDTH, ui.SCREEN_HEIGHT, 0, 0, 0)
+                libtcod.console_flush()
+
+        # Press 'f' to continue game on a board
+        action = handle_keys(key)
+        fight_finished = action.get('fight_end')
+
+        if fight_finished:
+            libtcod.console_clear(window)
+            fight_finished = True
+
+def loot_randomItem(monster, category, range_num, destination_dict):
+    for i in range(range_num):
+        random_pair = key, val = random.choice(list(monster["inventory"][category].items()))
+        x, y = random_pair     
+        destination_dict[x] = y
+    return destination_dict
 
 def monster_loot(monster):
     #random_consumbale = monster["inventory"]["food_items"]
@@ -238,17 +289,3 @@ def monster_loot(monster):
     except:
         print("Not enough items to add to random monster inventory for looting")
     return loot_corpse
-
-def loot_randomItem(monster, category, range_num, destination_dict):
-    for i in range(range_num):
-        random_pair = key, val = random.choice(list(monster["inventory"][category].items()))
-        x, y = random_pair     
-        destination_dict[x] = y
-    return destination_dict
-
-
-
-#def fight_boss():
-    #pass
-
-

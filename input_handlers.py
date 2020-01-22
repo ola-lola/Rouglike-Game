@@ -17,6 +17,8 @@ def handle_keys(key):
             return {'go_to_inventory': True}
         if key.c == ord('p'):
             return {'see_player_statistics': True}
+        if key.c == ord('f'):
+            return {'fight_end': True}
 
     if key.vk == libtcod.KEY_ENTER and key.lalt:
         # Alt+Enter: toggle full screen

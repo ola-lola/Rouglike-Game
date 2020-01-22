@@ -15,6 +15,8 @@ def create_player():
     # 2. Player's inventory with name, hps, position, available items etc.
     player = {  "Name"          : 'Player',#f'{name}',
                 "icon"          : PLAYER_ICON,
+                "race"          : "Dwarf",
+                "lvl"           : 1,
                 "hps"           : 100,
                 "strenght"      : 15,
                 "experience"    : 1,
@@ -53,6 +55,3 @@ def create_player():
     Returns:
     dictionary
     '''
-
-#engine.fight_regular(create_player(), monsters.monsters_overview(), ui.MONSTER_1)
-print(engine.monster_loot(engine.find_mobStats(monsters.monsters_overview(), ui.MONSTER_1)))
