@@ -53,5 +53,3 @@ def create_player():
     Returns:
     dictionary
     '''
-
-engine.fight_regular(create_player(), monsters.monsters_overview(), ui.MONSTER_1)

@@ -32,7 +32,7 @@ def main():
         # HANDLE USER INPUT
         if player["hps"] == 0:
             print("You died, game over")
-            break
+            return True
         if move:
             dx, dy = move
             player = engine.verify_move_is_possible(dx, dy, board, player, level, monsters.monsters_overview())
