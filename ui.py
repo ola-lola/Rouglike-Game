@@ -132,12 +132,19 @@ def display_inventory(player, window):
     '''
 
 def print_bar(player): 
-    max_lcol = calculate_max_column_width('Inventory', player)
+    max_lcol = calculate_max_column_width('Name', [])
 
     string_to_print_bar = (SCREEN_WIDTH * "-") + "\n"
 
-    for k, v in player.items():
-        string_to_print_bar += (f"{k:^{max_lcol}}:{str(v):^{max_lcol}} | ")
+    string_to_print_bar += (f"{'Name':^{max_lcol}}:{str(player['Name']):^{max_lcol}} | ")
+    string_to_print_bar += (f"{'RACE':^{max_lcol}}:{str(player['race']):^{max_lcol}} | ")
+    string_to_print_bar += (f"{'XP':^{max_lcol}}:{str(player['experience']):^{max_lcol}} | ")
+    string_to_print_bar += (f"{'LVL':^{max_lcol}}:{str(player['lvl']):^{max_lcol}} | ")
+    string_to_print_bar += (f"{'STR':^{max_lcol}}:{str(player['strenght']):^{max_lcol}} | ")
+    string_to_print_bar += (f"{'HPS':^{max_lcol}}:{str(player['hps']):^{max_lcol}} | ")
+
+    #for k, v in player.items():
+        #string_to_print_bar += (f"{k:^{max_lcol}}:{str(v):^{max_lcol}} | ")
     string_to_print_bar += "\n" + (SCREEN_WIDTH * "-") + "\n"
     
 
@@ -163,38 +170,6 @@ def display_bar(player, window, board):
             libtcod.console_put_char(window, j+horizontal_offset, i+vertical_offset, char, libtcod.BKGND_NONE)
 
 
-
-def print_bar(player): 
-    max_lcol = calculate_max_column_width('Inventory', player)
-
-    string_to_print_bar = (SCREEN_WIDTH * "-") + "\n"
-
-    for k, v in player.items():
-        string_to_print_bar += (f"{k:^{max_lcol}}:{str(v):^{max_lcol}} | ")
-    string_to_print_bar += "\n" + (SCREEN_WIDTH * "-") + "\n"
-    
-
-    return string_to_print_bar
-
-
-def display_bar(player, window, board):
-
-    string_bar = print_bar(player)
-    bar_to_display = string_bar.split("\n")
-   
-    horizontal_offset = 0
-    vertical_offset = int(SCREEN_HEIGHT - 3)
-
-    for i, line in enumerate(bar_to_display):
-        for j, char in enumerate(line):
-            if char == "-":
-                libtcod.console_set_default_foreground(window, libtcod.dark_green)
-            elif char == "|":
-                libtcod.console_set_default_foreground(window, libtcod.dark_green)
-     
-            else:
-                libtcod.console_set_default_foreground(window, libtcod.white)
-            libtcod.console_put_char(window, j+horizontal_offset, i+vertical_offset, char, libtcod.BKGND_NONE)
 
 
 def display_mob(mob):

@@ -15,6 +15,8 @@ def create_player():
     # 2. Player's inventory with name, hps, position, available items etc.
     player = {  "Name"          : 'Player',#f'{name}',
                 "icon"          : PLAYER_ICON,
+                "race"          : "Dwarf",
+                "lvl"           : 1,
                 "hps"           : 100,
                 "strenght"      : 15,
                 "experience"    : 1,
