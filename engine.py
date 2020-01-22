@@ -51,7 +51,7 @@ def is_newly_explored(x_coordinate, y_coordinate, board, player, gold_coin_symbo
         return False
 
 
-def verify_move_is_possible(move_x, move_y, board, player, level):
+def verify_move_is_possible(move_x, move_y, board, player, level, mob_dict, mob=None):
     x = player['position']['x']
     y = player['position']['y']
 
@@ -64,7 +64,8 @@ def verify_move_is_possible(move_x, move_y, board, player, level):
         board[x][y] = ' '
 
     if is_obstacle(x_new, y_new, board, [i for i in monster_icons()]):
-        fight_regular(mobType) # dodac komunikat np. to nie jest zaimplem. w tej wersji
+        mob = board[x_new][y_new]
+        fight_regular(player, mob_dict, mob) # dodac komunikat np. to nie jest zaimplem. w tej wersji
 
     if is_newly_explored(x_new, y_new, board, player, ui.BOARD_BACKGROUND_SYMBOL):
         player = add_to_inventory(player, ['gold coin'])
@@ -186,24 +187,51 @@ def generate_bossRoom():
 
 def damage_calculate(character):
     # Add null check for no weapons equipped
-    weapontype = character["equipped"]["weapon"]["wep_name"]
-    true_damage = character["strenght"] +\
-    character["equipped"]["weapon"]["wep_stats"]["damage"] + random.randint(1,6)
-
-    print(true_damage)
+    try:
+        weapontype = character["equipped"]["weapon"]["damage"]
+        true_damage = character["strenght"] + weapontype + random.randint(1,10)
+        return true_damage
+        # Czy to key error?
+    except KeyError:
+        true_damage = character["strenght"] + random.randint(1,10)
+        return true_damage
 
 def health_calculate(character):
-    health = character["hps"] +\
-        character["equipped"]["armor"]
+    try:
+        health = character["hps"] + character["equipped"]["armor"]["armor"]
+    except:
+        health = character["hps"]
+    return health
 
+def find_mobStats(dictionary, mobName):
+    for k,v in dictionary.items():
+        for nested_keys in v.items():
+            if mobName in nested_keys:
+                return v  
 
-def fight_regular(player, mobType):
-
-    # Player attacks
-    damage_calculate(player) 
-
-    fight = True
-    #while fight:
+def fight_regular(player, mob_dict, mob):
+    player_hps = int(health_calculate(player))
+    mob_hps = int(health_calculate(find_mobStats(mob_dict, mob)))
+    while True:
+        player_hps -= int(damage_calculate(find_mobStats(mob_dict, mob)))
+        player["hps"] = player_hps
+        if player_hps <= 0:
+            player["hps"] = 0
+            print(f'Your life remaining is: {player["hps"]}')
+            print("FIGHT FINISHED\nYou died")
+            break
+        print(f"The monster attacks you for {int(damage_calculate(find_mobStats(mob_dict, mob)))} damage.\
+                Your life remaining is: {player_hps}")
+        mob_hps -= int(damage_calculate(player))
+        if mob_hps <= 0:
+            mob_hps = 0
+            print(f"You attack the monster for {int(damage_calculate(player))} damage.\
+                 Monster's health remaining: {mob_hps}")
+            print("FIGHT FINISHED\nThe monster drops dead")
+            break
+        print(f"You attack the monster for {int(damage_calculate(player))} damage.\
+                 Monster's health remaining: {mob_hps}")
+        print()
 
         
 
@@ -213,5 +241,4 @@ def fight_boss():
 
 def fireball(direction):
     pass
-
 

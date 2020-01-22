@@ -1,6 +1,7 @@
 import tcod as libtcod
 from input_handlers import handle_keys
 import engine
+import monsters
 import ui
 from player_def import create_player
 import player_def
@@ -29,9 +30,12 @@ def main():
         exit = action.get('exit')
         fullscreen = action.get('fullscreen')
         # HANDLE USER INPUT
+        if player["hps"] == 0:
+            print("You died, game over")
+            break
         if move:
             dx, dy = move
-            player = engine.verify_move_is_possible(dx, dy, board, player, level)
+            player = engine.verify_move_is_possible(dx, dy, board, player, level, monsters.monsters_overview())
             if engine.is_next_level(player["position"]["x"], player["position"]["y"], board, ui.EXIT_SYMBOL):
                 level += 1
                 board = engine.create_board(level)

@@ -1,5 +1,7 @@
 import items
 import engine
+import monsters
+import ui
 
 
 PLAYER_ICON = '@'
@@ -20,7 +22,7 @@ def create_player():
                                 'x': PLAYER_START_X,
                                 'y': PLAYER_START_Y,
                                 },
-                "equipped"      : {"weapon": {},
+                "equipped"      : {"weapon": items.items_list()["weapons"]["stick"],
                                    "armor": items.items_list()["armor"]["robe"]},
                 # NEED TO VALIDATE IF ADD TO INVENTORY FUNCTION IMPLEMENTS CATEGORIES FOR ITEMS
                 "Inventory"     : {  "food items": {
@@ -51,3 +53,5 @@ def create_player():
     Returns:
     dictionary
     '''
+
+engine.fight_regular(create_player(), monsters.monsters_overview(), ui.MONSTER_1)
