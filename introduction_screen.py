@@ -82,7 +82,7 @@ def how_to_play(window):
 
         for i, line in enumerate(how_to_play_board):
             for j, char in enumerate(line):
-                if char == "'" or "`" or "-" or  "\\" or "/"  :
+                if char in ["'", "`", "-", "\\", "/", "."]:
                     libtcod.console_set_default_foreground(window, libtcod.light_chartreuse)
                 else:
                     libtcod.console_set_default_foreground(window, libtcod.white)
