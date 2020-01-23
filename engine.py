@@ -236,7 +236,7 @@ def fight_regular(window, player, mob_dict, mob):
                 string_to_print = f'Your life remaining is: {player["hps"]}\n\n' \
                     + 'FIGHT FINISHED\n\nYou died\n\n'
                 total_string_to_print += string_to_print
-                sound(_songs[2])
+                sound(_songs[4])
                 are_fighting = False
                 break
             else:
@@ -252,7 +252,6 @@ def fight_regular(window, player, mob_dict, mob):
                 total_string_to_print += string_to_print
                 loot_dead = monster_loot(find_mobStats(mob_dict, mob))
                 print(loot_dead)
-                pygame.mixer_music.stop()
                 are_fighting = False
                 break
             else:
@@ -287,7 +286,6 @@ def fight_regular(window, player, mob_dict, mob):
 
         if fight_finished:
             libtcod.console_clear(window)
-            sound(_songs[4])
             fight_finished = True
 
 
