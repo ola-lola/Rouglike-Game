@@ -1,4 +1,5 @@
 import tcod as libtcod
+import pygame
 import file_operations
 import monsters
 import random
@@ -6,6 +7,7 @@ import items
 import ui
 from input_handlers import handle_keys
 
+_songs = ['menu.mid', 'engame.mid', 'bossfight.mid', 'fight.mid', 'dg1.ogg','dg2.mp3']
 
 def monster_icons():
     icons = []
@@ -216,7 +218,6 @@ def fight_regular(window, player, mob_dict, mob):
     mob_hps = int(health_calculate(find_mobStats(mob_dict, mob)))
 
     libtcod.console_clear(window)
-
     key = libtcod.Key()
     mouse = libtcod.Mouse()
 
@@ -224,10 +225,9 @@ def fight_regular(window, player, mob_dict, mob):
 
     fight_finished = False
     are_fighting = True
+
     while not fight_finished:
-
         libtcod.sys_check_for_event(libtcod.EVENT_KEY_PRESS, key, mouse)
-
         while are_fighting:
             player_hps -= int(damage_calculate(find_mobStats(mob_dict, mob)))
             player["hps"] = player_hps
@@ -236,6 +236,7 @@ def fight_regular(window, player, mob_dict, mob):
                 string_to_print = f'Your life remaining is: {player["hps"]}\n\n' \
                     + 'FIGHT FINISHED\n\nYou died\n\n'
                 total_string_to_print += string_to_print
+                sound(_songs[2])
                 are_fighting = False
                 break
             else:
@@ -251,6 +252,7 @@ def fight_regular(window, player, mob_dict, mob):
                 total_string_to_print += string_to_print
                 loot_dead = monster_loot(find_mobStats(mob_dict, mob))
                 print(loot_dead)
+                pygame.mixer_music.stop()
                 are_fighting = False
                 break
             else:
@@ -274,6 +276,7 @@ def fight_regular(window, player, mob_dict, mob):
                     libtcod.console_set_default_foreground(window, libtcod.lightest_blue)
                 else:
                     libtcod.console_set_default_foreground(window, libtcod.white)
+    
                 libtcod.console_put_char(window, j+horizontal_offset, i+vertical_offset, char, libtcod.BKGND_NONE)
                 libtcod.console_blit(window, 0, 0, ui.SCREEN_WIDTH, ui.SCREEN_HEIGHT, 0, 0, 0)
                 libtcod.console_flush()
@@ -284,6 +287,7 @@ def fight_regular(window, player, mob_dict, mob):
 
         if fight_finished:
             libtcod.console_clear(window)
+            sound(_songs[4])
             fight_finished = True
 
 
@@ -311,3 +315,7 @@ def choice_loot(monster_loot):
     """ Create a function for providing input for F1-F4 keys that correspond
         to the monster_loot dictionary items"""
     pass
+
+def sound(file):
+    pygame.mixer_music.load(file)
+    pygame.mixer_music.play(-1)
