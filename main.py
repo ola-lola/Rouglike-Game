@@ -14,12 +14,15 @@ def main():
     level = 1
     board = engine.create_board(level)
 
-    introduction_screen.intro_menu_select(game_window)
-
+    # PRINT INTRO MENU SCREEN (AND QUIT GAME IF USER CHOOSE SO)
+    if introduction_screen.intro_menu_select(game_window) == -1:
+        return 0
 
     # VARIABLES TO HOLD KEYBOARD AND MOUSE INPUT
     key = libtcod.Key()
     mouse = libtcod.Mouse()
+
+    libtcod.console_clear(game_window)
 
     while not libtcod.console_is_window_closed():
         # WAIT FOR INPUT

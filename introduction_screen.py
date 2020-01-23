@@ -12,6 +12,8 @@ def create_intro():
 
 def intro_menu_select(window):
     intro_board = create_intro()
+    horizontal_offset = int((ui.SCREEN_WIDTH/2)-(len(intro_board[0])/2))
+    vertical_offset = int((ui.SCREEN_HEIGHT/2)-(len(intro_board)/2))
 
     key = libtcod.Key()
     mouse = libtcod.Mouse()
@@ -24,12 +26,14 @@ def intro_menu_select(window):
 
         for i, line in enumerate(intro_board):
             for j, char in enumerate(line):
-                libtcod.console_set_default_foreground(window, libtcod.amber)
-                libtcod.console_put_char(window, j, i, char, libtcod.BKGND_NONE)
+                if char == '#':
+                    libtcod.console_set_default_foreground(window, libtcod.light_chartreuse)
+                else:
+                    libtcod.console_set_default_foreground(window, libtcod.white)
+                libtcod.console_put_char(window, j+horizontal_offset, i+vertical_offset, char, libtcod.BKGND_NONE)
                 libtcod.console_blit(window, 0, 0, ui.SCREEN_WIDTH, ui.SCREEN_HEIGHT, 0, 0, 0)
                 libtcod.console_flush()
 
-        # Press 'i' to continue game on a board
         action = handle_keys(key)
         start_game = action.get('start_game')
         help = action.get('help')
@@ -40,12 +44,12 @@ def intro_menu_select(window):
             return 0
 
         #display info/screen 'how to play'
-        elif help:
+        if help:
             pass
 
         elif quit_menu:
             introduction_menu = False
-            return 0
+            return -1
 
 
 def create_character():
