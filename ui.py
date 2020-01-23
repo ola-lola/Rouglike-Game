@@ -29,6 +29,7 @@ def create_new_game_window(screen_width, screen_height):
     return window
 
 
+
 def you_lost_screen(window):
     text = "You died, game over"
     horizontal_offset = int((SCREEN_WIDTH/2)-(len(text)/2))
