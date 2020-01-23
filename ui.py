@@ -165,6 +165,7 @@ def display_inventory(player, window):
     Nothing
     '''
 
+
 def print_bar(player): 
     max_lcol = calculate_max_column_width('Name', [])
 

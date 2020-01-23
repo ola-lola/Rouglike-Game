@@ -190,9 +190,8 @@ def damage_calculate(character):
         weapontype = character["equipped"]["weapon"]["damage"]
         true_damage = character["strenght"] + weapontype + random.randint(1,10)
         return true_damage
-        # Czy to key error?
     except KeyError:
-        true_damage = character["strenght"] + random.randint(1,10)
+        true_damage = character["strenght"] + random.randint(1, 10)
         return true_damage
 
 
@@ -215,7 +214,6 @@ def fight_regular(window, player, mob_dict, mob):
     player_hps = int(health_calculate(player))
     mob_hps = int(health_calculate(find_mobStats(mob_dict, mob)))
 
-    are_fighting = True
     libtcod.console_clear(window)
 
     key = libtcod.Key()
@@ -224,6 +222,7 @@ def fight_regular(window, player, mob_dict, mob):
     total_string_to_print = ''
 
     fight_finished = False
+    are_fighting = True
     while not fight_finished:
 
         libtcod.sys_check_for_event(libtcod.EVENT_KEY_PRESS, key, mouse)

@@ -5,6 +5,7 @@ import monsters
 import ui
 from player_def import create_player
 import player_def
+import introduction_screen
 
 
 def main():
@@ -12,6 +13,10 @@ def main():
     player = create_player()
     level = 1
     board = engine.create_board(level)
+
+    introduction_screen.intro_menu_select(game_window)
+
+
     # VARIABLES TO HOLD KEYBOARD AND MOUSE INPUT
     key = libtcod.Key()
     mouse = libtcod.Mouse()
