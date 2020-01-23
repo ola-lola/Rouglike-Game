@@ -31,8 +31,7 @@ def main():
         fullscreen = action.get('fullscreen')
         # HANDLE USER INPUT
         if player["hps"] == 0:
-            print("You died, game over")
-            return True
+            ui.you_lost_screen(game_window)
         if move:
             dx, dy = move
             player = engine.verify_move_is_possible(dx, dy, board, player, level, monsters.monsters_overview())

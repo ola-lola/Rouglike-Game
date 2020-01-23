@@ -29,6 +29,37 @@ def create_new_game_window(screen_width, screen_height):
     return window
 
 
+def you_lost_screen(window):
+    text = "You died, game over"
+    horizontal_offset = int((SCREEN_WIDTH/2)-(len(text)/2))
+    vertical_offset = int(SCREEN_HEIGHT/2)
+
+    key = libtcod.Key()
+    mouse = libtcod.Mouse()
+
+    libtcod.console_clear(window)
+
+    while not libtcod.console_is_window_closed():
+        # WAIT FOR INPUT
+        libtcod.sys_check_for_event(libtcod.EVENT_KEY_PRESS, key, mouse)
+
+        action = handle_keys(key)
+        fullscreen = action.get('fullscreen')
+        exit = action.get('exit')
+
+        for j, char in enumerate(text):
+            libtcod.console_set_default_foreground(window, libtcod.red)
+            libtcod.console_put_char(window, horizontal_offset+j, vertical_offset, char, libtcod.BKGND_NONE)
+            libtcod.console_blit(window, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, 0, 0, 0)
+            libtcod.console_flush()
+
+        if fullscreen:
+            libtcod.console_set_fullscreen(not libtcod.console_is_fullscreen())
+
+        if exit:
+            return True
+
+
 def display_board(board, window):
     horizontal_offset = int((SCREEN_WIDTH/2)-(len(board)/2))
     for i, line in enumerate(board):
@@ -108,7 +139,10 @@ def display_inventory(player, window):
 
         for i, line in enumerate(inventory_to_display):
             for j, char in enumerate(line):
-                libtcod.console_set_default_foreground(window, libtcod.white)
+                if char == '-' or char == '|':
+                    libtcod.console_set_default_foreground(window, libtcod.light_chartreuse)
+                else:
+                    libtcod.console_set_default_foreground(window, libtcod.white)
                 libtcod.console_put_char(window, j+horizontal_offset, i+vertical_offset, char, libtcod.BKGND_NONE)
                 libtcod.console_blit(window, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, 0, 0, 0)
                 libtcod.console_flush()

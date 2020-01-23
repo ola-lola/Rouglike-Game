@@ -162,6 +162,7 @@ def remove_from_inventory(player, removed_items):
                 player["Inventory"][category].pop(item)
     return player
 
+
 def random_mobMovement():
     pass
 
@@ -274,12 +275,14 @@ def fight_regular(window, player, mob_dict, mob):
             libtcod.console_clear(window)
             fight_finished = True
 
+
 def loot_randomItem(monster_dict, category, range_num, destination_dict):
     for i in range(range_num):
         random_pair = key, val = random.choice(list(monster_dict["inventory"][category].items()))
         x, y = random_pair     
         destination_dict[x] = y
     return destination_dict
+
 
 def monster_loot(monster_dict):
     #random_consumbale = monster["inventory"]["food_items"]
@@ -291,6 +294,7 @@ def monster_loot(monster_dict):
     except:
         print("Not enough items to add to random monster inventory for looting")
     return loot_corpse
+
 
 def choice_loot(monster_loot):
     """ Create a function for providing input for F1-F4 keys that correspond
