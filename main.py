@@ -54,6 +54,9 @@ def main():
                     board = engine.create_board(level)
                     player['position']['x'] = player_def.PLAYER_START_X
                     player['position']['y'] = player_def.PLAYER_START_Y
+                    player['lvl'] += 1
+                    player['experience'] += level*15
+                    player['strenght'] += level*15
             if go_to_inventory:
                 ui.display_inventory(player, game_window)
             if fullscreen:

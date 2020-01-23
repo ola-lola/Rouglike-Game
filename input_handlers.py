@@ -30,6 +30,8 @@ def handle_keys(key):
         return {'help': True}
     elif key.vk == libtcod.KEY_3:
         return {'exit_menu': True}
+    elif key.vk == libtcod.KEY_4:
+        return {'back': True}
 
     elif key.vk == libtcod.KEY_ESCAPE:
         # Exit the game
