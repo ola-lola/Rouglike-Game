@@ -30,7 +30,7 @@ def monsters_overview():
         "boss": {
             "icon": ui.BOSS,
             "strenght": 100,
-            "hps": 999,
+            "hps": 750,
             "experience": 100,
         }
     }
