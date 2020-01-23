@@ -70,6 +70,7 @@ def verify_move_is_possible(move_x, move_y, board, player, level, mob_dict, mob=
 
     if is_newly_explored(x_new, y_new, board, player, ui.BOARD_BACKGROUND_SYMBOL):
         player = add_to_inventory(player, ['gold coin'])
+        player['hps'] += 1
     # elif is_next_level(x_new, y_new, board, EXIT_SYMBOL):
     #     level += 1
         # player['position']['x'] = PLAYER_START_X
