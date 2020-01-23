@@ -178,7 +178,7 @@ def print_bar(player):
 
     string_to_print_bar = (SCREEN_WIDTH * "-") + "\n"
 
-    string_to_print_bar += (f"{'Name':^{max_lcol}}:{str(player['Name']):^{max_lcol}} | ")
+    string_to_print_bar += (f"{'NAME':^{max_lcol}}:{str(player['Name']):^{max_lcol}} | ")
     string_to_print_bar += (f"{'RACE':^{max_lcol}}:{str(player['race']):^{max_lcol}} | ")
     string_to_print_bar += (f"{'XP':^{max_lcol}}:{str(player['experience']):^{max_lcol}} | ")
     string_to_print_bar += (f"{'LVL':^{max_lcol}}:{str(player['lvl']):^{max_lcol}} | ")
