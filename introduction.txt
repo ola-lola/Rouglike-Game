@@ -29,7 +29,7 @@
 #                                                #
 #           1. Start new game                    #
 #           2. How to play                       #
-#           3. quit                              #
+#           3. Quit game                         #
 #                                                #
 #                                                #
 #                                                #

@@ -35,8 +35,8 @@ def main():
         action = handle_keys(key)
         move = action.get('move') # nazwy - do przeczytania np. should_move, is_exit
         go_to_inventory = action.get('go_to_inventory')
-        exit = action.get('exit')
         fullscreen = action.get('fullscreen')
+        exit = action.get('exit')
         # HANDLE USER INPUT
         if player["hps"] == 0:
             ui.you_lost_screen(game_window)

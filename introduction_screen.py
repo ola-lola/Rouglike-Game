@@ -37,6 +37,7 @@ def intro_menu_select(window):
         action = handle_keys(key)
         start_game = action.get('start_game')
         help = action.get('help')
+        fullscreen = action.get('fullscreen')
         quit_menu = action.get('exit_menu')
 
         if start_game:
@@ -47,7 +48,10 @@ def intro_menu_select(window):
         if help:
             pass
 
-        elif quit_menu:
+        if fullscreen:
+            libtcod.console_set_fullscreen(not libtcod.console_is_fullscreen())
+
+        if quit_menu:
             introduction_menu = False
             return -1
 

@@ -232,37 +232,46 @@ def fight_regular(window, player, mob_dict, mob):
             player["hps"] = player_hps
             if player_hps <= 0:
                 player["hps"] = 0
-                string_to_print = f'Your life remaining is: {player["hps"]}\n' \
-                    + 'FIGHT FINISHED\nYou died\n'
+                string_to_print = f'Your life remaining is: {player["hps"]}\n\n' \
+                    + 'FIGHT FINISHED\n\nYou died\n\n'
                 total_string_to_print += string_to_print
                 are_fighting = False
                 break
             else:
-                string_to_print = f'The monster attacks you for {int(damage_calculate(find_mobStats(mob_dict, mob)))} damage.'\
-                        + f'Your life remaining is: {player_hps}\n'
+                string_to_print = f'The monster attacks you for {int(damage_calculate(find_mobStats(mob_dict, mob)))} damage.\n'\
+                        + f'Your life remaining is: {player_hps}\n\n'
                 total_string_to_print += string_to_print
             mob_hps -= int(damage_calculate(player))
             if mob_hps <= 0:
                 mob_hps = 0
-                string_to_print = f'You attack the monster for {int(damage_calculate(player))} damage.'\
-                    + f'Monster\'s health remaining: {mob_hps}\n' \
-                    + 'FIGHT FINISHED\nThe monster drops dead\n'
+                string_to_print = f'You attack the monster for {int(damage_calculate(player))} damage.\n'\
+                    + f'Monster\'s health remaining: {mob_hps}\n\n' \
+                    + '\n\nFIGHT FINISHED\nThe monster drops dead\n\n'
                 total_string_to_print += string_to_print
                 loot_dead = monster_loot(find_mobStats(mob_dict, mob))
                 print(loot_dead)
                 are_fighting = False
                 break
             else:
-                string_to_print = f'You attack the monster for {int(damage_calculate(player))} damage.'\
-                    + f'Monster\'s health remaining: {mob_hps}\n'
+                string_to_print = f'You attack the monster for {int(damage_calculate(player))} damage.\n'\
+                    + f'Monster\'s health remaining: {mob_hps}\n\n'
             total_string_to_print += string_to_print
 
         total_string_to_print_list = total_string_to_print.split('\n')
+        horizontal_offset = int((ui.SCREEN_WIDTH/2)-(len(total_string_to_print_list[0])/2))
+        vertical_offset = int((ui.SCREEN_HEIGHT/2)-(len(total_string_to_print_list)/2))
 
         for i, line in enumerate(total_string_to_print_list):
             for j, char in enumerate(line):
-                libtcod.console_set_default_foreground(window, libtcod.white)
-                libtcod.console_put_char(window, j, i, char, libtcod.BKGND_NONE)
+                if 'drops dead' in line:
+                    libtcod.console_set_default_foreground(window, libtcod.light_chartreuse)
+                elif 'You died' in line:
+                    libtcod.console_set_default_foreground(window, libtcod.lighter_red)
+                elif 'The monster' in line or 'Your' in line:
+                    libtcod.console_set_default_foreground(window, libtcod.lightest_blue)
+                else:
+                    libtcod.console_set_default_foreground(window, libtcod.white)
+                libtcod.console_put_char(window, j+horizontal_offset, i+vertical_offset, char, libtcod.BKGND_NONE)
                 libtcod.console_blit(window, 0, 0, ui.SCREEN_WIDTH, ui.SCREEN_HEIGHT, 0, 0, 0)
                 libtcod.console_flush()
 
