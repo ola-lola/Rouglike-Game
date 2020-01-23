@@ -71,10 +71,10 @@ def verify_move_is_possible(move_x, move_y, board, player, level, mob_dict, mob=
     if is_newly_explored(x_new, y_new, board, player, ui.BOARD_BACKGROUND_SYMBOL):
         player = add_to_inventory(player, ['gold coin'])
         player['hps'] += 1
-    # elif is_next_level(x_new, y_new, board, EXIT_SYMBOL):
-    #     level += 1
-        # player['position']['x'] = PLAYER_START_X
-        # player['position']['y'] = PLAYER_START_Y
+
+    if is_obstacle(x_new, y_new, board, ui.PORTAL_SYMBOL_AKA_WIN_SPOT):
+        ui.final_screen(0, 'win')
+
     return player
         
     '''
@@ -261,6 +261,8 @@ def fight_regular(window, player, mob_dict, mob):
         total_string_to_print_list = total_string_to_print.split('\n')
         horizontal_offset = int((ui.SCREEN_WIDTH/2)-(len(total_string_to_print_list[0])/2))
         vertical_offset = int((ui.SCREEN_HEIGHT/2)-(len(total_string_to_print_list)/2))
+        last_rows = -(ui.SCREEN_HEIGHT)
+        total_string_to_print_list = total_string_to_print_list[last_rows:]
 
         for i, line in enumerate(total_string_to_print_list):
             for j, char in enumerate(line):

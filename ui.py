@@ -7,6 +7,7 @@ import monsters
 BOARD_BACKGROUND_SYMBOL = "."
 WALL_SYMBOL = "#"
 EXIT_SYMBOL = ">"
+PORTAL_SYMBOL_AKA_WIN_SPOT = "*"
 TREE_SYMBOL = "|"
 WATER_SYMBOL = "o"
 
@@ -29,9 +30,11 @@ def create_new_game_window(screen_width, screen_height):
     return window
 
 
-
-def you_lost_screen(window):
-    text = "You died, game over"
+def final_screen(window, loose_or_win):
+    if loose_or_win == 'win':
+        text = "You won, congratulations!"
+    else:
+        text = "You died, game over"
     horizontal_offset = int((SCREEN_WIDTH/2)-(len(text)/2))
     vertical_offset = int(SCREEN_HEIGHT/2)
 
@@ -49,7 +52,10 @@ def you_lost_screen(window):
         exit = action.get('exit')
 
         for j, char in enumerate(text):
-            libtcod.console_set_default_foreground(window, libtcod.red)
+            if loose_or_win == 'win':
+                libtcod.console_set_default_foreground(window, libtcod.lightest_chartreuse)
+            else:
+                libtcod.console_set_default_foreground(window, libtcod.red)
             libtcod.console_put_char(window, horizontal_offset+j, vertical_offset, char, libtcod.BKGND_NONE)
             libtcod.console_blit(window, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, 0, 0, 0)
             libtcod.console_flush()

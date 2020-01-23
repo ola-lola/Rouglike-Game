@@ -28,7 +28,10 @@ def monsters_overview():
             "inventory": items.items_list()
             },
         "boss": {
-            "icon": ui.BOSS
+            "icon": ui.BOSS,
+            "strenght": 100,
+            "hps": 999,
+            "experience": 100,
         }
     }
     return monsters
