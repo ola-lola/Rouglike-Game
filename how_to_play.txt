@@ -14,8 +14,7 @@
 #                                                 #
 #        Use ARROWS to move the player
 
-           Use console to buy items 
-          or perform actions in game
+          
 
           Press 'q' to quit the game                                   #
 #                                                #
