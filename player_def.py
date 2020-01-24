@@ -18,7 +18,7 @@ def create_player():
                 "race"          : "Dwarf",
                 "lvl"           : 1,
                 "hps"           : 100,
-                "strenght"      : 15,
+                "strenght"      : 1225,
                 "experience"    : 1,
                 "position"      : {
                                 'x': PLAYER_START_X,
