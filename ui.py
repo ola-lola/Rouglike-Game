@@ -2,7 +2,7 @@ import tcod as libtcod
 from input_handlers import handle_keys
 import items
 import monsters
-
+import file_operations
 
 BOARD_BACKGROUND_SYMBOL = "."
 WALL_SYMBOL = "#"
@@ -32,11 +32,11 @@ def create_new_game_window(screen_width, screen_height):
 
 def final_screen(window, loose_or_win):
     if loose_or_win == 'win':
-        text = "You won, congratulations!"
+        screen = file_operations.import_board("youwon.txt")
     else:
-        text = "You died, game over"
-    horizontal_offset = int((SCREEN_WIDTH/2)-(len(text)/2))
-    vertical_offset = int(SCREEN_HEIGHT/2)
+        screen = file_operations.import_board("youlost.txt")
+    horizontal_offset = int((SCREEN_WIDTH/2)-(len(screen[0])/2))
+    vertical_offset = int((SCREEN_HEIGHT/2)-(len(screen)/2))
 
     key = libtcod.Key()
     mouse = libtcod.Mouse()
@@ -51,14 +51,25 @@ def final_screen(window, loose_or_win):
         fullscreen = action.get('fullscreen')
         exit = action.get('exit')
 
-        for j, char in enumerate(text):
-            if loose_or_win == 'win':
-                libtcod.console_set_default_foreground(window, libtcod.lightest_chartreuse)
-            else:
-                libtcod.console_set_default_foreground(window, libtcod.red)
-            libtcod.console_put_char(window, horizontal_offset+j, vertical_offset, char, libtcod.BKGND_NONE)
-            libtcod.console_blit(window, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, 0, 0, 0)
-            libtcod.console_flush()
+        for i, line in enumerate(screen):
+            for j, char in enumerate(line):
+                if loose_or_win == 'win':
+                    if char == "M":
+                        libtcod.console_set_default_foreground(window, libtcod.yellow)
+                    elif char == "S":
+                        libtcod.console_set_default_foreground(window, libtcod.blue)
+                    elif char == "#":
+                        libtcod.console_set_default_foreground(window, libtcod.light_chartreuse)
+                    else:
+                        libtcod.console_set_default_foreground(window, libtcod.white)
+                else:
+                    if char == "#":
+                        libtcod.console_set_default_foreground(window, libtcod.red)
+                    else:
+                        libtcod.console_set_default_foreground(window, libtcod.white)
+                libtcod.console_put_char(window, j+horizontal_offset, i+vertical_offset, char, libtcod.BKGND_NONE)
+                libtcod.console_blit(window, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, 0, 0, 0)
+                libtcod.console_flush()
 
         if fullscreen:
             libtcod.console_set_fullscreen(not libtcod.console_is_fullscreen())
