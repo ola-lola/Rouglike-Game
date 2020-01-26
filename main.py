@@ -11,7 +11,7 @@ import introduction_screen
 
 
 def main():
-    pygame.init()
+    pygame.mixer.init()
     engine.sound(engine._songs[0])
     level = 1
     game_window = ui.create_new_game_window(ui.SCREEN_WIDTH, ui.SCREEN_HEIGHT)

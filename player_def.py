@@ -8,7 +8,6 @@ PLAYER_ICON = '@'
 PLAYER_START_X = 3
 PLAYER_START_Y = 3
 
-
 def create_player():
     # 1. Get a player's name from input
     # name = input("Enter a name of player:  ")
@@ -27,7 +26,7 @@ def create_player():
                 "equipped"      : {"weapon": items.items_list()["weapons"]["stick"],
                                    "armor": items.items_list()["armor"]["robe"]},
                 # NEED TO VALIDATE IF ADD TO INVENTORY FUNCTION IMPLEMENTS CATEGORIES FOR ITEMS
-                "Inventory"     : {  "food items": {
+                "Inventory"     : {  "food_items": {
                                                     "chocolate" : 1,
                                                     "apples"    : 2
                                                 },
