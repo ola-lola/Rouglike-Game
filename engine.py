@@ -251,7 +251,12 @@ def fight_regular(window, player, mob_dict, mob):
                     + '\n\nFIGHT FINISHED\nThe monster drops dead\n\n'
                 total_string_to_print += string_to_print
                 loot_dead = monster_loot(find_mobStats(mob_dict, mob))
-                print(loot_dead)
+                total_string_to_print += '\n\n You collect the following items\n from him to your backpack:\n'
+                if loot_dead == {}:
+                    total_string_to_print += ' * ' + 'No items to collect, sorry\n'
+                else:
+                    for i in loot_dead:
+                        total_string_to_print += ' * ' + str(i) + '\n'
                 are_fighting = False
                 break
             else:
