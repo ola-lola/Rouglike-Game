@@ -5,6 +5,7 @@ import monsters
 import random
 import items
 import ui
+import player_def
 from input_handlers import handle_keys
 
 _songs = ['menu.wav', 'engame.wav', 'bossfight.wav', 'fight.wav', 'dg1.ogg', 'dg2.mp3']
@@ -145,7 +146,6 @@ def add_to_inventory_category(player, item, category):
     else:
         player["Inventory"][category][item] += 1
 
-
 def add_to_inventory(player, added_items):
     all_available_items = items.items_list()
     # Doesn't work for single items, expects a list as param
@@ -251,6 +251,8 @@ def fight_regular(window, player, mob_dict, mob):
                     + '\n\nFIGHT FINISHED\nThe monster drops dead\n\n'
                 total_string_to_print += string_to_print
                 loot_dead = monster_loot(find_mobStats(mob_dict, mob))
+                #TUTAJ NA LOOTWANIE
+                add_to_inventory(player, loot_dead)
                 total_string_to_print += '\n\n You collect the following items\n from him to your backpack:\n'
                 if loot_dead == {}:
                     total_string_to_print += ' * ' + 'No items to collect, sorry\n'
@@ -301,6 +303,12 @@ def loot_randomItem(monster_dict, category, range_num, destination_dict):
         destination_dict[x] = y
     return destination_dict
 
+def add_lootToInv(mobName,player):
+    for k in monster_loot(find_mobStats(monsters.monsters_overview(), mobName)).keys():
+        player["Inventory"] = k
+    return player
+
+
 
 def monster_loot(monster_dict):
     #random_consumbale = monster["inventory"]["food_items"]
@@ -320,5 +328,7 @@ def choice_loot(monster_loot):
     pass
 
 def sound(file):
+    pygame.init()
     pygame.mixer_music.load(file)
     pygame.mixer_music.play(-1)
+
