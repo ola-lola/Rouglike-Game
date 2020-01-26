@@ -7,7 +7,7 @@ import items
 import ui
 from input_handlers import handle_keys
 
-_songs = ['menu.mid', 'engame.mid', 'bossfight.mid', 'fight.mid', 'dg1.ogg','dg2.mp3']
+_songs = ['menu.wav', 'engame.wav', 'bossfight.wav', 'fight.wav', 'dg1.ogg', 'dg2.mp3']
 
 def monster_icons():
     icons = []
