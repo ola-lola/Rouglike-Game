@@ -253,6 +253,12 @@ def fight_regular(window, player, mob_dict, mob):
                 loot_dead = monster_loot(find_mobStats(mob_dict, mob))
                 #TUTAJ NA LOOTWANIE
                 add_to_inventory(player, loot_dead)
+                total_string_to_print += '\n\n You collect the following items\n from him to your backpack:\n'
+                if loot_dead == {}:
+                    total_string_to_print += ' * ' + 'No items to collect, sorry\n'
+                else:
+                    for i in loot_dead:
+                        total_string_to_print += ' * ' + str(i) + '\n'
                 are_fighting = False
                 break
             else:
